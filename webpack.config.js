@@ -25,27 +25,31 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif)$/,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
       {
         test: /\.s[ac]ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
           // Creates `style` nodes from JS strings
-          "style-loader",
+          'style-loader',
           // Translates CSS into CommonJS
-          "css-loader",
+          'css-loader',
           // Compiles Sass to CSS
-          "sass-loader",
-          "postcss-loader"
-        ]
-      }
-    ]
+          'sass-loader',
+          'postcss-loader',
+        ],
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-url-loader',
+      },
+    ],
   },
   devtool: prod ? undefined : 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: './public/index.html',
     }),
     new MiniCssExtractPlugin(),
   ],
