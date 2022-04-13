@@ -1,8 +1,9 @@
 import React from 'react';
+import GameField from '../GameField';
 
 const App = () => {
   return (
-    <div>
+    <div className="flex h-screen">
       <GameField />
     </div>
   );
