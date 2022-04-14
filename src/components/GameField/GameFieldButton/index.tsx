@@ -8,8 +8,7 @@ const GameFieldButton: React.FC<{
   return (
     <button
       onClick={onClick}
-      className={`h-fit self-center rounded-lg bg-slate-300 px-2 shadow
-                  transition hover:bg-slate-200 active:bg-slate-400 ${className}`}
+      className={`text-slate-500 hover:text-slate-300 active:text-slate-700 ${className}`}
     >
       {children}
     </button>

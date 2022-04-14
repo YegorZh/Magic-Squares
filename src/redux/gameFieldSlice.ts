@@ -92,10 +92,20 @@ export const gameFieldSlice = createSlice({
         state.value = out;
       }
     },
+    turnGameField: (state, action: PayloadAction<{ left: boolean }>) => {
+      let newField = [...state.value];
+      newField = newField.map((row, i) => {
+        return row.map((_, j) => {
+          if (action.payload.left) return state.value[j][row.length - 1 - i];
+          return state.value[newField.length - 1 - j][i];
+        });
+      });
+      state.value = newField;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { initializeGameField, swipeRow, swipeColumn } =
+export const { initializeGameField, swipeRow, swipeColumn, turnGameField } =
   gameFieldSlice.actions;
 export default gameFieldSlice.reducer;
