@@ -4,10 +4,11 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import GameFieldButton from './GameFieldButton';
 import GameFieldRow from './GameFieldRow';
 
-const GameField: React.FC<{ swipe?: boolean; turn?: boolean }> = ({
-  swipe,
-  turn,
-}) => {
+const GameField: React.FC<{
+  swipe?: boolean;
+  turn?: boolean;
+  swipeAll?: boolean;
+}> = ({ swipe, turn, swipeAll }) => {
   const gameField = useAppSelector((state) => state.gameField.value);
   const dispatcher = useAppDispatch();
   useEffect(() => {
@@ -43,6 +44,7 @@ const GameField: React.FC<{ swipe?: boolean; turn?: boolean }> = ({
               lastRow={n === gameField.length - 1}
               swipe={swipe}
               turn={turn}
+              swipeAll={swipeAll}
             />
           </div>
           <GameFieldButton

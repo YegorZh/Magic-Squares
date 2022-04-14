@@ -1,5 +1,9 @@
 import React from 'react';
-import { swipeColumn, turnGameField } from '../../../redux/gameFieldSlice';
+import {
+  swipeAllColumns,
+  swipeColumn,
+  turnGameField,
+} from '../../../redux/gameFieldSlice';
 import { useAppDispatch } from '../../../redux/hooks';
 import GameFieldButton from '../GameFieldButton';
 
@@ -9,7 +13,8 @@ const GameFieldRow: React.FC<{
   lastRow?: boolean;
   swipe?: boolean;
   turn?: boolean;
-}> = ({ data, firstRow, lastRow, swipe, turn }) => {
+  swipeAll?: boolean;
+}> = ({ data, firstRow, lastRow, swipe, turn, swipeAll }) => {
   const dispatcher = useAppDispatch();
   return (
     <div className="flex">
@@ -69,6 +74,27 @@ const GameFieldRow: React.FC<{
                 </svg>
               </GameFieldButton>
             )}
+            {firstRow && swipeAll && i === data.length - 1 && (
+              <GameFieldButton
+                onClick={() => dispatcher(swipeAllColumns({ top: true }))}
+                className="absolute top-[-24px] right-[-24px]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 11l7-7 7 7M5 19l7-7 7 7"
+                  />
+                </svg>
+              </GameFieldButton>
+            )}
             {/* {element} */}
             {lastRow && swipe && (
               <GameFieldButton
@@ -110,6 +136,27 @@ const GameFieldRow: React.FC<{
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </GameFieldButton>
+            )}
+            {lastRow && swipeAll && i === 0 && (
+              <GameFieldButton
+                onClick={() => dispatcher(swipeAllColumns({ top: false }))}
+                className="absolute bottom-[-24px] left-[-24px]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
                   />
                 </svg>
               </GameFieldButton>

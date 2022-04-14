@@ -31,7 +31,7 @@ const swipeHorizontal = (arr: string[], left: boolean) => {
   return arr.map((_, i) => mapAction(i));
 };
 
-const swipeVertical = (arr: string[][], index: number, top: boolean) => {
+const swipeVertical = (arr: string[][], index: number, top?: boolean) => {
   let mapAction = (row: string[], i: number) => {
     const newRow = [...row];
     if (i === 0) newRow[index] = arr[arr.length - 1][index];
@@ -57,6 +57,19 @@ const rotateField = (arr: string[][], left?: boolean) => {
       return mapAction(i, j);
     });
   });
+};
+
+const swipeAllVertical = (arr: string[][], top?: boolean) => {
+  let mapAction = (i: number, j: number) => {
+    if (i === 0) return arr[arr.length - 1][j];
+    return arr[i - 1][j];
+  };
+  if (top)
+    mapAction = (i: number, j: number) => {
+      if (i === arr.length - 1) return arr[0][j];
+      return arr[i + 1][j];
+    };
+  return arr.map((row, i) => row.map((_, j) => mapAction(i, j)));
 };
 
 export const gameFieldSlice = createSlice({
@@ -106,10 +119,18 @@ export const gameFieldSlice = createSlice({
     ) => {
       state.value = rotateField([...state.value], action.payload.left);
     },
+    swipeAllColumns: (state, action: PayloadAction<{ top?: boolean }>) => {
+      state.value = swipeAllVertical([...state.value], action.payload.top);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { initializeGameField, swipeRow, swipeColumn, turnGameField } =
-  gameFieldSlice.actions;
+export const {
+  initializeGameField,
+  swipeRow,
+  swipeColumn,
+  turnGameField,
+  swipeAllColumns,
+} = gameFieldSlice.actions;
 export default gameFieldSlice.reducer;
