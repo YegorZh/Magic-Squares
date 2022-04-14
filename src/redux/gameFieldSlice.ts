@@ -16,6 +16,49 @@ const initialState: gameFieldState = {
   value: [],
 };
 
+const swipeHorizontal = (arr: string[], left: boolean) => {
+  let mapAction = (i: number) => {
+    if (i === 0) return arr[arr.length - 1];
+    return arr[i - 1];
+  };
+
+  if (left)
+    mapAction = (i: number) => {
+      if (i === arr.length - 1) return arr[0];
+      return arr[i + 1];
+    };
+
+  return arr.map((_, i) => mapAction(i));
+};
+
+const swipeVertical = (arr: string[][], index: number, top: boolean) => {
+  let mapAction = (row: string[], i: number) => {
+    const newRow = [...row];
+    if (i === 0) newRow[index] = arr[arr.length - 1][index];
+    else newRow[index] = arr[i - 1][index];
+    return newRow;
+  };
+  if (top) {
+    mapAction = (row: string[], i: number) => {
+      const newRow = [...row];
+      if (i === arr.length - 1) newRow[index] = arr[0][index];
+      else newRow[index] = arr[i + 1][index];
+      return newRow;
+    };
+  }
+  return arr.map((row, i) => mapAction(row, i));
+};
+
+const rotateField = (arr: string[][], left?: boolean) => {
+  let mapAction = (i: number, j: number) => arr[arr.length - 1 - j][i];
+  if (left) mapAction = (i: number, j: number) => arr[j][arr.length - 1 - i];
+  return arr.map((row, i) => {
+    return row.map((_, j) => {
+      return mapAction(i, j);
+    });
+  });
+};
+
 export const gameFieldSlice = createSlice({
   name: 'gameField',
   initialState,
@@ -45,19 +88,7 @@ export const gameFieldSlice = createSlice({
     ) => {
       const { index, left } = action.payload;
       if (index > 0 || index < state.value.length) {
-        let out = [...state.value[index]];
-        if (left) {
-          out = out.map((_, i) => {
-            if (i === out.length - 1) return out[0];
-            return out[i + 1];
-          });
-        } else {
-          out = out.map((_, i) => {
-            if (i === 0) return out[out.length - 1];
-            return out[i - 1];
-          });
-        }
-        state.value[index] = out;
+        state.value[index] = swipeHorizontal(state.value[index], left);
       }
     },
     swipeColumn: (
@@ -66,41 +97,14 @@ export const gameFieldSlice = createSlice({
     ) => {
       const { index, top } = action.payload;
       if (index > 0 || index < state.value.length) {
-        let out = [...state.value];
-        if (top) {
-          out = out.map((row, i) => {
-            const newRow = [...row];
-            if (i === out.length - 1) {
-              newRow[index] = out[0][index];
-              return newRow;
-            }
-
-            newRow[index] = out[i + 1][index];
-            return newRow;
-          });
-        } else {
-          out = out.map((row, i) => {
-            const newRow = [...row];
-            if (i === 0) {
-              newRow[index] = out[out.length - 1][index];
-              return newRow;
-            }
-            newRow[index] = out[i - 1][index];
-            return newRow;
-          });
-        }
-        state.value = out;
+        state.value = swipeVertical([...state.value], index, top);
       }
     },
-    turnGameField: (state, action: PayloadAction<{ left: boolean }>) => {
-      let newField = [...state.value];
-      newField = newField.map((row, i) => {
-        return row.map((_, j) => {
-          if (action.payload.left) return state.value[j][row.length - 1 - i];
-          return state.value[newField.length - 1 - j][i];
-        });
-      });
-      state.value = newField;
+    turnGameField: (
+      state,
+      action: PayloadAction<{ left: boolean; fieldIndex?: number }>
+    ) => {
+      state.value = rotateField([...state.value], action.payload.left);
     },
   },
 });
