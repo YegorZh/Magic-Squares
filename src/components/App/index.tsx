@@ -13,8 +13,8 @@ const App = () => {
   const rightName = 'right';
 
   useEffect(() => {
-    const x = 6,
-      y = 6;
+    const x = 3,
+      y = 3;
     dispatcher(initializeGameField({ x, y, name: leftName }));
     dispatcher(initializeGameField({ x, y, name: mainName }));
     dispatcher(initializeGameField({ x, y, name: rightName }));

@@ -36111,7 +36111,7 @@ const App = () => {
     const leftName = 'left';
     const rightName = 'right';
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        const x = 6, y = 6;
+        const x = 3, y = 3;
         dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ x, y, name: leftName }));
         dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ x, y, name: mainName }));
         dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ x, y, name: rightName }));
