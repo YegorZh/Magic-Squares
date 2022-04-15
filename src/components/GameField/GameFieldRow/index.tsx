@@ -37,7 +37,7 @@ const GameFieldRow: React.FC<{
               <GameFieldButton
                 className="absolute bottom-[38px]"
                 onClick={() =>
-                  dispatcher(swipeColumn({ index: i, top: true, name: name }))
+                  dispatcher(swipeColumn({ index: i, top: true, name: swipe }))
                 }
               >
                 <svg
