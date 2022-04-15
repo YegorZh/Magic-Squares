@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { objectTraps } from 'immer/dist/internal';
 
 const colors = [
   'bg-blue-500',
@@ -9,12 +10,10 @@ const colors = [
   'bg-green-600',
 ];
 export interface gameFieldState {
-  value: string[][];
+  [key: string]: string[][];
 }
 
-const initialState: gameFieldState = {
-  value: [],
-};
+const initialState: gameFieldState = {};
 
 const swipeHorizontal = (arr: string[], left: boolean) => {
   let mapAction = (i: number) => {
@@ -72,55 +71,87 @@ const swipeAllVertical = (arr: string[][], top?: boolean) => {
   return arr.map((row, i) => row.map((_, j) => mapAction(i, j)));
 };
 
+const allCheck = (
+  name: string,
+  state: gameFieldState,
+  defaultCallback: (state: gameFieldState, name: string) => any,
+  allCallback: (state: gameFieldState, key: string) => any
+) => {
+  if (name === 'ALL') {
+    return Object.keys(state).forEach((key) => allCallback(state, key));
+  } else if (name && state[name]) {
+    return defaultCallback(state, name);
+  }
+};
+
 export const gameFieldSlice = createSlice({
   name: 'gameField',
   initialState,
   reducers: {
     initializeGameField: (
       state,
-      action: PayloadAction<{ x: number; y: number }>
+      action: PayloadAction<{ x: number; y: number; name: string }>
     ) => {
-      const coordinates = { ...action.payload };
-      coordinates.x = Math.min(coordinates.x, 6);
-      coordinates.y = Math.min(coordinates.y, 6);
-      const out = [...Array(coordinates.x)].map(() => [
-        ...Array(coordinates.y),
-      ]);
-
-      for (let i = 0; i < coordinates.x; i++) {
-        for (let j = 0; j < coordinates.y; j++) {
-          out[i][j] = colors[i];
+      const { x, y, name } = { ...action.payload };
+      if (name !== 'ALL') {
+        const out = [...Array(x)].map(() => [...Array(y)]);
+        for (let i = 0; i < x; i++) {
+          for (let j = 0; j < y; j++) {
+            out[i][j] = colors[i];
+          }
         }
-      }
 
-      state.value = out;
+        state[name] = out;
+      }
     },
     swipeRow: (
       state,
-      action: PayloadAction<{ index: number; left: boolean }>
+      action: PayloadAction<{ index: number; left: boolean; name?: string }>
     ) => {
-      const { index, left } = action.payload;
-      if (index > 0 || index < state.value.length) {
-        state.value[index] = swipeHorizontal(state.value[index], left);
-      }
+      const { index, left, name } = action.payload;
+      if (name)
+        allCheck(
+          name,
+          state,
+          (state, name) => {
+            if (index > 0 || index < state[name].length)
+              state[name][index] = swipeHorizontal(state[name][index], left);
+          },
+          (state, key) => {
+            if (index > 0 || index < state[key].length)
+              state[key][index] = swipeHorizontal(state[key][index], left);
+          }
+        );
     },
     swipeColumn: (
       state,
-      action: PayloadAction<{ index: number; top: boolean }>
+      action: PayloadAction<{ index: number; top: boolean; name?: string }>
     ) => {
-      const { index, top } = action.payload;
-      if (index > 0 || index < state.value.length) {
-        state.value = swipeVertical([...state.value], index, top);
+      const { index, top, name } = action.payload;
+      if (name && state[name]) {
+        if (index > 0 || index < state[name].length) {
+          state[name] = swipeVertical([...state[name]], index, top);
+        }
       }
     },
     turnGameField: (
       state,
-      action: PayloadAction<{ left: boolean; fieldIndex?: number }>
+      action: PayloadAction<{
+        left: boolean;
+        name?: string;
+      }>
     ) => {
-      state.value = rotateField([...state.value], action.payload.left);
+      const { left, name } = action.payload;
+      if (name && state[name])
+        state[name] = rotateField([...state[name]], left);
     },
-    swipeAllColumns: (state, action: PayloadAction<{ top?: boolean }>) => {
-      state.value = swipeAllVertical([...state.value], action.payload.top);
+    swipeAllColumns: (
+      state,
+      action: PayloadAction<{ top?: boolean; name?: string }>
+    ) => {
+      const { top, name } = action.payload;
+      if (name && state[name])
+        state[name] = swipeAllVertical([...state[name]], top);
     },
   },
 });
