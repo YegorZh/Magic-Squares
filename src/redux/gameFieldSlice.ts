@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { objectTraps } from 'immer/dist/internal';
 
 const colors = [
   'bg-blue-500',
@@ -15,37 +14,64 @@ export interface gameFieldState {
 
 const initialState: gameFieldState = {};
 
-const swipeHorizontal = (arr: string[], left?: boolean) => {
-  let mapAction = (i: number) => {
-    if (i === 0) return arr[arr.length - 1];
-    return arr[i - 1];
+const checkIndex = (size: number, index?: number) => {
+  if (index === undefined) index = Math.floor(Math.random() * size);
+  return Math.max(0, Math.min(index, size));
+};
+
+const checkIndexArr = (size: number, indexArr?: number | number[]) => {
+  let outIndexes: (number | undefined)[];
+  if (!Array.isArray(indexArr)) outIndexes = [indexArr];
+  else outIndexes = indexArr;
+  return [...new Set(outIndexes.map((index) => checkIndex(size, index)))];
+};
+
+const swipeHorizontal = (
+  arr: string[][],
+  rowIndexes?: number | number[],
+  left?: boolean
+) => {
+  const indexes = checkIndexArr(arr.length, rowIndexes);
+  let mapAction = (index: number, i: number) => {
+    if (i === 0) return arr[index][arr.length - 1];
+    return arr[index][i - 1];
   };
 
   if (left)
-    mapAction = (i: number) => {
-      if (i === arr.length - 1) return arr[0];
-      return arr[i + 1];
+    mapAction = (index: number, i: number) => {
+      if (i === arr.length - 1) return arr[index][0];
+      return arr[index][i + 1];
     };
-
-  return arr.map((_, i) => mapAction(i));
+  indexes.forEach(
+    (index) => (arr[index] = arr[index].map((_, i) => mapAction(index, i)))
+  );
+  return arr;
 };
 
-const swipeVertical = (arr: string[][], index: number, top?: boolean) => {
-  let mapAction = (row: string[], i: number) => {
+const swipeVertical = (
+  arr: string[][],
+  columnIndexes?: number | number[],
+  top?: boolean
+) => {
+  const indexes = checkIndexArr(arr[0].length, columnIndexes);
+  let mapAction = (row: string[], index: number, i: number) => {
     const newRow = [...row];
     if (i === 0) newRow[index] = arr[arr.length - 1][index];
     else newRow[index] = arr[i - 1][index];
     return newRow;
   };
   if (top) {
-    mapAction = (row: string[], i: number) => {
+    mapAction = (row: string[], index: number, i: number) => {
       const newRow = [...row];
       if (i === arr.length - 1) newRow[index] = arr[0][index];
       else newRow[index] = arr[i + 1][index];
       return newRow;
     };
   }
-  return arr.map((row, i) => mapAction(row, i));
+  indexes.forEach(
+    (index) => (arr = arr.map((row, i) => mapAction(row, index, i)))
+  );
+  return arr;
 };
 
 const rotateField = (arr: string[][], left?: boolean) => {
@@ -59,16 +85,11 @@ const rotateField = (arr: string[][], left?: boolean) => {
 };
 
 const swipeAllVertical = (arr: string[][], top?: boolean) => {
-  let mapAction = (i: number, j: number) => {
-    if (i === 0) return arr[arr.length - 1][j];
-    return arr[i - 1][j];
-  };
-  if (top)
-    mapAction = (i: number, j: number) => {
-      if (i === arr.length - 1) return arr[0][j];
-      return arr[i + 1][j];
-    };
-  return arr.map((row, i) => row.map((_, j) => mapAction(i, j)));
+  return swipeVertical(arr, [...Array(arr[0].length).keys()], top);
+};
+
+const swipeAllHorizontal = (arr: string[][], left?: boolean) => {
+  return swipeHorizontal(arr, [...Array(arr.length).keys()], left);
 };
 
 const allCheck = (
@@ -113,19 +134,17 @@ export const gameFieldSlice = createSlice({
     },
     swipeRow: (
       state,
-      action: PayloadAction<{ index: number; left: boolean; name?: string }>
+      action: PayloadAction<{ index?: number; left: boolean; name?: string }>
     ) => {
       const { index, left, name } = action.payload;
       allCheck(
         name,
         state,
         (state, name) => {
-          if (index > 0 || index < state[name].length)
-            state[name][index] = swipeHorizontal(state[name][index], left);
+          state[name] = swipeHorizontal(state[name], index, left);
         },
         (state, key) => {
-          if (index > 0 || index < state[key].length)
-            state[key][index] = swipeHorizontal(state[key][index], left);
+          state[key] = swipeHorizontal(state[key], index, left);
         }
       );
     },
@@ -138,12 +157,10 @@ export const gameFieldSlice = createSlice({
         name,
         state,
         (state, name) => {
-          if (index > 0 || index < state[name].length)
-            state[name] = swipeVertical([...state[name]], index, top);
+          state[name] = swipeVertical([...state[name]], index, top);
         },
         (state, key) => {
-          if (index > 0 || index < state[key].length)
-            state[key] = swipeVertical([...state[key]], index, top);
+          state[key] = swipeVertical([...state[key]], index, top);
         }
       );
     },
@@ -188,24 +205,24 @@ export const gameFieldSlice = createSlice({
         n: number;
       }>
     ) => {
-      const { n } = action.payload;
-      let out = { ...state };
-      for (let i = 0; i < n; i++) {
-        const randomRow = Math.floor(Math.random() * out.main.length);
-        const randomColumn = Math.floor(Math.random() * out.main.length);
-        Object.keys(out).forEach(
-          (key) =>
-            (out[key][randomRow] = swipeHorizontal([...out[key][randomRow]]))
-        );
-        Object.keys(out).forEach(
-          (key) => (out[key] = swipeVertical([...out[key]], randomColumn))
-        );
-        out.left = rotateField(out.left);
-        out.right = swipeAllVertical(out.right);
-      }
-      state.left = out.left;
-      state.main = out.main;
-      state.right = out.right;
+      // const { n } = action.payload;
+      // let out = { ...state };
+      // for (let i = 0; i < n; i++) {
+      //   const randomRow = Math.floor(Math.random() * out.main.length);
+      //   const randomColumn = Math.floor(Math.random() * out.main.length);
+      //   Object.keys(out).forEach(
+      //     (key) =>
+      //       (out[key] = swipeHorizontal([...out[key][randomRow]]))
+      //   );
+      //   Object.keys(out).forEach(
+      //     (key) => (out[key] = swipeVertical([...out[key]], randomColumn))
+      //   );
+      //   out.left = rotateField(out.left);
+      //   out.right = swipeAllVertical(out.right);
+      // }
+      // state.left = out.left;
+      // state.main = out.main;
+      // state.right = out.right;
     },
   },
 });
