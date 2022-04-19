@@ -36111,16 +36111,24 @@ const App = () => {
     const leftName = 'left';
     const rightName = 'right';
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        const x = 3, y = 3;
-        dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ x, y, name: leftName }));
-        dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ x, y, name: mainName }));
-        dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ x, y, name: rightName }));
+        const size = 3;
+        dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ size, name: leftName }));
+        dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({
+            size,
+            name: mainName,
+            actions: {
+                swipe: 'ALL',
+                turn: leftName,
+                swipeAll: rightName,
+            },
+        }));
+        dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.initializeGameField)({ size, name: rightName }));
     }, []);
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "mx-auto flex h-[80%] w-[798px] flex-col rounded-2xl border-x-2 border-slate-700 bg-gray-800 shadow-lg" },
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "h-full" }),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "m-auto flex h-full w-full" },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameField__WEBPACK_IMPORTED_MODULE_3__["default"], { name: leftName }),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameField__WEBPACK_IMPORTED_MODULE_3__["default"], { swipe: 'ALL', turn: leftName, swipeAll: rightName, name: mainName }),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameField__WEBPACK_IMPORTED_MODULE_3__["default"], { name: mainName }),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameField__WEBPACK_IMPORTED_MODULE_3__["default"], { name: rightName })),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "flex h-full items-end justify-center" },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.randomizeField)({ n: 1000 })), className: "mb-12 rounded-xl bg-slate-600 px-8 py-3 \r\n                     font-bold uppercase tracking-tighter text-slate-400 transition \r\n                     hover:bg-slate-500 hover:text-slate-300\r\n                     active:bg-slate-700 active:text-slate-600" }, "Randomize"))));
@@ -36170,7 +36178,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const GameFieldRow = ({ data, firstRow, lastRow, swipe, turn, swipeAll, name }) => {
+const GameFieldRow = ({ data, firstRow, lastRow, swipe, turn, swipeAll }) => {
     const dispatcher = (0,_redux_hooks__WEBPACK_IMPORTED_MODULE_2__.useAppDispatch)();
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "flex" }, data.map((element, i) => {
         let cornerStyle = '';
@@ -36184,22 +36192,22 @@ const GameFieldRow = ({ data, firstRow, lastRow, swipe, turn, swipeAll, name }) 
             cornerStyle = 'rounded-br-2xl';
         return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { key: i, className: `relative flex h-8 w-8 items-center justify-center rounded-sm border-x
                         border-y border-slate-900 ${element} ${cornerStyle}` },
-            firstRow && swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { className: "absolute bottom-[38px]", onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeColumn)({ index: i, top: true, name: swipe })) },
+            firstRow && swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { className: "absolute bottom-[38px]", onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeColumn)({ index: i, top: true, names: swipe })) },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M7 11l5-5m0 0l5 5m-5-5v12" })))),
-            firstRow && turn && i === 0 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.turnGameField)({ left: true, name: turn })), className: "absolute top-[-22px] left-[-22px]" },
+            firstRow && turn && i === 0 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.turnGameField)({ left: true, names: turn })), className: "absolute top-[-22px] left-[-22px]" },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" })))),
-            firstRow && swipeAll && i === data.length - 1 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeAllColumns)({ top: true, name: swipeAll })), className: "absolute top-[-24px] right-[-24px]" },
+            firstRow && swipeAll && i === data.length - 1 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeAllColumns)({ top: true, names: swipeAll })), className: "absolute top-[-24px] right-[-24px]" },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M5 11l7-7 7 7M5 19l7-7 7 7" })))),
-            lastRow && swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { className: "absolute bottom-[-32px]", onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeColumn)({ index: i, top: false, name: swipe })) },
+            lastRow && swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { className: "absolute bottom-[-32px]", onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeColumn)({ index: i, top: false, names: swipe })) },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M17 13l-5 5m0 0l-5-5m5 5V6" })))),
-            lastRow && turn && i === 0 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.turnGameField)({ left: false, name: turn })), className: "absolute bottom-[-22px] left-[-22px]" },
+            lastRow && turn && i === 0 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.turnGameField)({ left: false, names: turn })), className: "absolute bottom-[-22px] left-[-22px]" },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" })))),
-            lastRow && swipeAll && i === data.length - 1 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeAllColumns)({ top: false, name: swipeAll })), className: "absolute bottom-[-23px] right-[-23px]" },
+            lastRow && swipeAll && i === data.length - 1 && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeAllColumns)({ top: false, names: swipeAll })), className: "absolute bottom-[-23px] right-[-23px]" },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M19 13l-7 7-7-7m14-8l-7 7-7-7" }))))));
     })));
@@ -36230,16 +36238,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const GameField = ({ swipe, turn, swipeAll, name }) => {
-    const gameField = (0,_redux_hooks__WEBPACK_IMPORTED_MODULE_2__.useAppSelector)((state) => state.gameField[name]);
+const GameField = ({ name }) => {
+    const gameFields = (0,_redux_hooks__WEBPACK_IMPORTED_MODULE_2__.useAppSelector)((state) => state.gameField);
+    let field = [], actions;
+    if (gameFields[name])
+        ({ field, actions } = gameFields[name]);
     const dispatcher = (0,_redux_hooks__WEBPACK_IMPORTED_MODULE_2__.useAppDispatch)();
-    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "m-auto" }, gameField?.map((row, n) => (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { key: n, className: "flex gap-2" },
-        swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeRow)({ index: n, left: true, name: swipe })) },
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "m-auto" }, field?.map((row, n) => (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { key: n, className: "flex gap-2" },
+        actions?.swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeRow)({
+                index: n,
+                left: true,
+                names: actions?.swipe,
+            })) },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M11 17l-5-5m0 0l5-5m-5 5h12" })))),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "rounded-2xl shadow-md" },
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldRow__WEBPACK_IMPORTED_MODULE_4__["default"], { data: row, firstRow: n === 0, lastRow: n === gameField.length - 1, swipe: swipe, turn: turn, swipeAll: swipeAll, name: name })),
-        swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeRow)({ index: n, left: false, name: swipe })) },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldRow__WEBPACK_IMPORTED_MODULE_4__["default"], { data: row, firstRow: n === 0, lastRow: n === field.length - 1, swipe: actions?.swipe, turn: actions?.turn, swipeAll: actions?.swipeAll })),
+        actions?.swipe && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_GameFieldButton__WEBPACK_IMPORTED_MODULE_3__["default"], { onClick: () => dispatcher((0,_redux_gameFieldSlice__WEBPACK_IMPORTED_MODULE_1__.swipeRow)({
+                index: n,
+                left: false,
+                names: actions?.swipe,
+            })) },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M13 7l5 5m0 0l-5 5m5-5H6" })))))))));
 };
@@ -36260,7 +36279,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "gameFieldSlice": () => (/* binding */ gameFieldSlice),
 /* harmony export */   "initializeGameField": () => (/* binding */ initializeGameField),
-/* harmony export */   "randAction": () => (/* binding */ randAction),
 /* harmony export */   "randomizeField": () => (/* binding */ randomizeField),
 /* harmony export */   "swipeAllColumns": () => (/* binding */ swipeAllColumns),
 /* harmony export */   "swipeColumn": () => (/* binding */ swipeColumn),
@@ -36278,22 +36296,38 @@ const colors = [
     'bg-green-600',
 ];
 const initialState = {};
-const swipeHorizontal = (arr, left) => {
-    let mapAction = (i) => {
+const checkIndex = (size, index) => {
+    if (index === undefined)
+        index = Math.floor(Math.random() * size);
+    return Math.max(0, Math.min(index, size));
+};
+const checkIndexArr = (size, indexArr) => {
+    let outIndexes;
+    if (!Array.isArray(indexArr))
+        outIndexes = [indexArr];
+    else
+        outIndexes = indexArr;
+    return [...new Set(outIndexes.map((index) => checkIndex(size, index)))];
+};
+const swipeHorizontal = (arr, rowIndexes, left) => {
+    const indexes = checkIndexArr(arr.length, rowIndexes);
+    let mapAction = (index, i) => {
         if (i === 0)
-            return arr[arr.length - 1];
-        return arr[i - 1];
+            return arr[index][arr.length - 1];
+        return arr[index][i - 1];
     };
     if (left)
-        mapAction = (i) => {
+        mapAction = (index, i) => {
             if (i === arr.length - 1)
-                return arr[0];
-            return arr[i + 1];
+                return arr[index][0];
+            return arr[index][i + 1];
         };
-    return arr.map((_, i) => mapAction(i));
+    indexes.forEach((index) => (arr[index] = arr[index].map((_, i) => mapAction(index, i))));
+    return arr;
 };
-const swipeVertical = (arr, index, top) => {
-    let mapAction = (row, i) => {
+const swipeVertical = (arr, columnIndexes, top) => {
+    const indexes = checkIndexArr(arr[0].length, columnIndexes);
+    let mapAction = (row, index, i) => {
         const newRow = [...row];
         if (i === 0)
             newRow[index] = arr[arr.length - 1][index];
@@ -36302,7 +36336,7 @@ const swipeVertical = (arr, index, top) => {
         return newRow;
     };
     if (top) {
-        mapAction = (row, i) => {
+        mapAction = (row, index, i) => {
             const newRow = [...row];
             if (i === arr.length - 1)
                 newRow[index] = arr[0][index];
@@ -36311,7 +36345,8 @@ const swipeVertical = (arr, index, top) => {
             return newRow;
         };
     }
-    return arr.map((row, i) => mapAction(row, i));
+    indexes.forEach((index) => (arr = arr.map((row, i) => mapAction(row, index, i))));
+    return arr;
 };
 const rotateField = (arr, left) => {
     let mapAction = (i, j) => arr[arr.length - 1 - j][i];
@@ -36324,100 +36359,103 @@ const rotateField = (arr, left) => {
     });
 };
 const swipeAllVertical = (arr, top) => {
-    let mapAction = (i, j) => {
-        if (i === 0)
-            return arr[arr.length - 1][j];
-        return arr[i - 1][j];
-    };
-    if (top)
-        mapAction = (i, j) => {
-            if (i === arr.length - 1)
-                return arr[0][j];
-            return arr[i + 1][j];
-        };
-    return arr.map((row, i) => row.map((_, j) => mapAction(i, j)));
+    return swipeVertical(arr, [...Array(arr[0].length).keys()], top);
 };
-const allCheck = (name, state, defaultCallback, allCallback) => {
-    if (name === 'ALL') {
-        return Object.keys(state).forEach((key) => allCallback(state, key));
-    }
-    else if (name && state[name]) {
-        return defaultCallback(state, name);
-    }
+const swipeAllHorizontal = (arr, left) => {
+    return swipeHorizontal(arr, [...Array(arr.length).keys()], left);
 };
-var randAction;
-(function (randAction) {
-    randAction[randAction["swipeAllColumns"] = 0] = "swipeAllColumns";
-    randAction[randAction["swipeRow"] = 1] = "swipeRow";
-    randAction[randAction["swipeColumn"] = 2] = "swipeColumn";
-    randAction[randAction["rotateField"] = 3] = "rotateField";
-})(randAction || (randAction = {}));
+const namesCheck = (names) => {
+    let out;
+    if (!Array.isArray(names))
+        out = [names];
+    else
+        out = names;
+    return out;
+};
+const allCheck = (names, state, action) => {
+    if (names === 'ALL')
+        return Object.keys(state).forEach((key) => action(state, key));
+    namesCheck(names).forEach((name) => {
+        action(state, name);
+    });
+};
 const gameFieldSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
     name: 'gameField',
     initialState,
     reducers: {
         initializeGameField: (state, action) => {
-            const { x, y, name } = { ...action.payload };
+            const { size, name, actions } = { ...action.payload };
             if (name !== 'ALL') {
-                const out = [...Array(x)].map(() => [...Array(y)]);
-                for (let i = 0; i < x; i++) {
-                    for (let j = 0; j < y; j++) {
+                const out = [...Array(size)].map(() => [...Array(size)]);
+                for (let i = 0; i < size; i++) {
+                    for (let j = 0; j < size; j++) {
                         out[i][j] = colors[i];
                     }
                 }
-                state[name] = out;
+                state[name] = { field: out, actions };
             }
         },
         swipeRow: (state, action) => {
-            const { index, left, name } = action.payload;
-            allCheck(name, state, (state, name) => {
-                if (index > 0 || index < state[name].length)
-                    state[name][index] = swipeHorizontal(state[name][index], left);
-            }, (state, key) => {
-                if (index > 0 || index < state[key].length)
-                    state[key][index] = swipeHorizontal(state[key][index], left);
+            const { index, left, names } = action.payload;
+            allCheck(names, state, (state, name) => {
+                state[name].field = swipeHorizontal(state[name].field, index, left);
             });
         },
         swipeColumn: (state, action) => {
-            const { index, top, name } = action.payload;
-            allCheck(name, state, (state, name) => {
-                if (index > 0 || index < state[name].length)
-                    state[name] = swipeVertical([...state[name]], index, top);
-            }, (state, key) => {
-                if (index > 0 || index < state[key].length)
-                    state[key] = swipeVertical([...state[key]], index, top);
+            const { index, top, names } = action.payload;
+            allCheck(names, state, (state, name) => {
+                state[name].field = swipeVertical([...state[name].field], index, top);
             });
         },
         turnGameField: (state, action) => {
-            const { left, name } = action.payload;
-            allCheck(name, state, (state, name) => {
-                state[name] = rotateField([...state[name]], left);
-            }, (state, key) => {
-                state[key] = rotateField([...state[key]], left);
+            const { left, names } = action.payload;
+            allCheck(names, state, (state, name) => {
+                state[name].field = rotateField([...state[name].field], left);
             });
         },
         swipeAllColumns: (state, action) => {
-            const { top, name } = action.payload;
-            allCheck(name, state, (state, name) => {
-                state[name] = swipeAllVertical([...state[name]], top);
-            }, (state, key) => {
-                state[key] = swipeAllVertical([...state[key]], top);
+            const { top, names } = action.payload;
+            allCheck(names, state, (state, name) => {
+                state[name].field = swipeAllVertical([...state[name].field], top);
             });
         },
         randomizeField: (state, action) => {
             const { n } = action.payload;
-            let out = { ...state };
+            const randZeroOrOne = () => Math.round(Math.random());
             for (let i = 0; i < n; i++) {
-                const randomRow = Math.floor(Math.random() * out.main.length);
-                const randomColumn = Math.floor(Math.random() * out.main.length);
-                Object.keys(out).forEach((key) => (out[key][randomRow] = swipeHorizontal([...out[key][randomRow]])));
-                Object.keys(out).forEach((key) => (out[key] = swipeVertical([...out[key]], randomColumn)));
-                out.left = rotateField(out.left);
-                out.right = swipeAllVertical(out.right);
+                Object.keys(state).forEach((name) => {
+                    if (state[name].actions) {
+                        const { swipe, swipeAll, turn } = state[name]
+                            .actions;
+                        if (swipe && randZeroOrOne()) {
+                            const randomIndexOne = checkIndex(state[name].field.length);
+                            const randomIndexTwo = checkIndex(state[name].field.length);
+                            allCheck(swipe, state, (state, name) => (state[name].field = swipeVertical(state[name].field, randomIndexOne)));
+                            allCheck(swipe, state, (state, name) => (state[name].field = swipeHorizontal(state[name].field, randomIndexTwo)));
+                        }
+                        if (swipeAll && randZeroOrOne())
+                            allCheck(swipeAll, state, (state, name) => (state[name].field = swipeAllVertical(state[name].field)));
+                        if (turn && randZeroOrOne())
+                            allCheck(turn, state, (state, name) => (state[name].field = rotateField(state[name].field)));
+                    }
+                });
             }
-            state.left = out.left;
-            state.main = out.main;
-            state.right = out.right;
+            // for (let i = 0; i < n; i++) {
+            //   const randomRow = Math.floor(Math.random() * out.main.length);
+            //   const randomColumn = Math.floor(Math.random() * out.main.length);
+            //   Object.keys(out).forEach(
+            //     (key) =>
+            //       (out[key] = swipeHorizontal([...out[key][randomRow]]))
+            //   );
+            //   Object.keys(out).forEach(
+            //     (key) => (out[key] = swipeVertical([...out[key]], randomColumn))
+            //   );
+            //   out.left = rotateField(out.left);
+            //   out.right = swipeAllVertical(out.right);
+            // }
+            // state.left = out.left;
+            // state.main = out.main;
+            // state.right = out.right;
         },
     },
 });

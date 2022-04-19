@@ -113,13 +113,12 @@ const namesCheck = (names: string | string[]) => {
 const allCheck = (
   names: string | string[],
   state: gameFieldState,
-  defaultCallback: (state: gameFieldState, name: string) => any,
-  allCallback: (state: gameFieldState, key: string) => any
+  action: (state: gameFieldState, name: string) => any
 ) => {
   if (names === 'ALL')
-    return Object.keys(state).forEach((key) => allCallback(state, key));
+    return Object.keys(state).forEach((key) => action(state, key));
   namesCheck(names).forEach((name) => {
-    defaultCallback(state, name);
+    action(state, name);
   });
 };
 
@@ -130,17 +129,16 @@ export const gameFieldSlice = createSlice({
     initializeGameField: (
       state,
       action: PayloadAction<{
-        x: number;
-        y: number;
+        size: number;
         name: string;
         actions?: GameFieldActions;
       }>
     ) => {
-      const { x, y, name, actions } = { ...action.payload };
+      const { size, name, actions } = { ...action.payload };
       if (name !== 'ALL') {
-        const out = [...Array(x)].map(() => [...Array(y)]);
-        for (let i = 0; i < x; i++) {
-          for (let j = 0; j < y; j++) {
+        const out = [...Array(size)].map(() => [...Array(size)]);
+        for (let i = 0; i < size; i++) {
+          for (let j = 0; j < size; j++) {
             out[i][j] = colors[i];
           }
         }
@@ -157,16 +155,9 @@ export const gameFieldSlice = createSlice({
       }>
     ) => {
       const { index, left, names } = action.payload;
-      allCheck(
-        names,
-        state,
-        (state, name) => {
-          state[name].field = swipeHorizontal(state[name].field, index, left);
-        },
-        (state, key) => {
-          state[key].field = swipeHorizontal(state[key].field, index, left);
-        }
-      );
+      allCheck(names, state, (state, name) => {
+        state[name].field = swipeHorizontal(state[name].field, index, left);
+      });
     },
     swipeColumn: (
       state,
@@ -177,16 +168,9 @@ export const gameFieldSlice = createSlice({
       }>
     ) => {
       const { index, top, names } = action.payload;
-      allCheck(
-        names,
-        state,
-        (state, name) => {
-          state[name].field = swipeVertical([...state[name].field], index, top);
-        },
-        (state, key) => {
-          state[key].field = swipeVertical([...state[key].field], index, top);
-        }
-      );
+      allCheck(names, state, (state, name) => {
+        state[name].field = swipeVertical([...state[name].field], index, top);
+      });
     },
     turnGameField: (
       state,
@@ -196,32 +180,18 @@ export const gameFieldSlice = createSlice({
       }>
     ) => {
       const { left, names } = action.payload;
-      allCheck(
-        names,
-        state,
-        (state, name) => {
-          state[name].field = rotateField([...state[name].field], left);
-        },
-        (state, key) => {
-          state[key].field = rotateField([...state[key].field], left);
-        }
-      );
+      allCheck(names, state, (state, name) => {
+        state[name].field = rotateField([...state[name].field], left);
+      });
     },
     swipeAllColumns: (
       state,
       action: PayloadAction<{ top?: boolean; names: string | string[] }>
     ) => {
       const { top, names } = action.payload;
-      allCheck(
-        names,
-        state,
-        (state, name) => {
-          state[name].field = swipeAllVertical([...state[name].field], top);
-        },
-        (state, key) => {
-          state[key].field = swipeAllVertical([...state[key].field], top);
-        }
-      );
+      allCheck(names, state, (state, name) => {
+        state[name].field = swipeAllVertical([...state[name].field], top);
+      });
     },
     randomizeField: (
       state,
@@ -229,8 +199,55 @@ export const gameFieldSlice = createSlice({
         n: number;
       }>
     ) => {
-      // const { n } = action.payload;
-      // let out = { ...state };
+      const { n } = action.payload;
+      const randZeroOrOne = () => Math.round(Math.random());
+      for (let i = 0; i < n; i++) {
+        Object.keys(state).forEach((name) => {
+          if (state[name].actions) {
+            const { swipe, swipeAll, turn } = state[name]
+              .actions as GameFieldActions;
+            if (swipe && randZeroOrOne()) {
+              const randomIndexOne = checkIndex(state[name].field.length);
+              const randomIndexTwo = checkIndex(state[name].field.length);
+              allCheck(
+                swipe,
+                state,
+                (state, name) =>
+                  (state[name].field = swipeVertical(
+                    state[name].field,
+                    randomIndexOne
+                  ))
+              );
+              allCheck(
+                swipe,
+                state,
+                (state, name) =>
+                  (state[name].field = swipeHorizontal(
+                    state[name].field,
+                    randomIndexTwo
+                  ))
+              );
+            }
+
+            if (swipeAll && randZeroOrOne())
+              allCheck(
+                swipeAll,
+                state,
+                (state, name) =>
+                  (state[name].field = swipeAllVertical(state[name].field))
+              );
+
+            if (turn && randZeroOrOne())
+              allCheck(
+                turn,
+                state,
+                (state, name) =>
+                  (state[name].field = rotateField(state[name].field))
+              );
+          }
+        });
+      }
+
       // for (let i = 0; i < n; i++) {
       //   const randomRow = Math.floor(Math.random() * out.main.length);
       //   const randomColumn = Math.floor(Math.random() * out.main.length);

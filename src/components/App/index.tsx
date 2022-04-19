@@ -13,13 +13,11 @@ const App = () => {
   const rightName = 'right';
 
   useEffect(() => {
-    const x = 3,
-      y = 3;
-    dispatcher(initializeGameField({ x, y, name: leftName }));
+    const size = 3;
+    dispatcher(initializeGameField({ size, name: leftName }));
     dispatcher(
       initializeGameField({
-        x,
-        y,
+        size,
         name: mainName,
         actions: {
           swipe: 'ALL',
@@ -28,7 +26,7 @@ const App = () => {
         },
       })
     );
-    dispatcher(initializeGameField({ x, y, name: rightName }));
+    dispatcher(initializeGameField({ size, name: rightName }));
   }, []);
 
   return (
