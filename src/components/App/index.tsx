@@ -16,7 +16,18 @@ const App = () => {
     const x = 3,
       y = 3;
     dispatcher(initializeGameField({ x, y, name: leftName }));
-    dispatcher(initializeGameField({ x, y, name: mainName }));
+    dispatcher(
+      initializeGameField({
+        x,
+        y,
+        name: mainName,
+        actions: {
+          swipe: 'ALL',
+          turn: leftName,
+          swipeAll: rightName,
+        },
+      })
+    );
     dispatcher(initializeGameField({ x, y, name: rightName }));
   }, []);
 
@@ -25,12 +36,7 @@ const App = () => {
       <div className="h-full"></div>
       <div className="m-auto flex h-full w-full">
         <GameField name={leftName} />
-        <GameField
-          swipe={'ALL'}
-          turn={leftName}
-          swipeAll={rightName}
-          name={mainName}
-        />
+        <GameField name={mainName} />
         <GameField name={rightName} />
       </div>
       <div className="flex h-full items-end justify-center">

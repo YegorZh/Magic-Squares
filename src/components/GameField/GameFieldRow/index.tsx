@@ -11,11 +11,10 @@ const GameFieldRow: React.FC<{
   data: string[];
   firstRow?: boolean;
   lastRow?: boolean;
-  swipe?: string;
-  turn?: string;
-  swipeAll?: string;
-  name?: string;
-}> = ({ data, firstRow, lastRow, swipe, turn, swipeAll, name }) => {
+  swipe?: string | string[];
+  turn?: string | string[];
+  swipeAll?: string | string[];
+}> = ({ data, firstRow, lastRow, swipe, turn, swipeAll }) => {
   const dispatcher = useAppDispatch();
   return (
     <div className="flex">
@@ -37,7 +36,7 @@ const GameFieldRow: React.FC<{
               <GameFieldButton
                 className="absolute bottom-[38px]"
                 onClick={() =>
-                  dispatcher(swipeColumn({ index: i, top: true, name: swipe }))
+                  dispatcher(swipeColumn({ index: i, top: true, names: swipe }))
                 }
               >
                 <svg
@@ -59,7 +58,7 @@ const GameFieldRow: React.FC<{
             {firstRow && turn && i === 0 && (
               <GameFieldButton
                 onClick={() =>
-                  dispatcher(turnGameField({ left: true, name: turn }))
+                  dispatcher(turnGameField({ left: true, names: turn }))
                 }
                 className="absolute top-[-22px] left-[-22px]"
               >
@@ -82,7 +81,7 @@ const GameFieldRow: React.FC<{
             {firstRow && swipeAll && i === data.length - 1 && (
               <GameFieldButton
                 onClick={() =>
-                  dispatcher(swipeAllColumns({ top: true, name: swipeAll }))
+                  dispatcher(swipeAllColumns({ top: true, names: swipeAll }))
                 }
                 className="absolute top-[-24px] right-[-24px]"
               >
@@ -107,7 +106,9 @@ const GameFieldRow: React.FC<{
               <GameFieldButton
                 className="absolute bottom-[-32px]"
                 onClick={() =>
-                  dispatcher(swipeColumn({ index: i, top: false, name: swipe }))
+                  dispatcher(
+                    swipeColumn({ index: i, top: false, names: swipe })
+                  )
                 }
               >
                 <svg
@@ -129,7 +130,7 @@ const GameFieldRow: React.FC<{
             {lastRow && turn && i === 0 && (
               <GameFieldButton
                 onClick={() =>
-                  dispatcher(turnGameField({ left: false, name: turn }))
+                  dispatcher(turnGameField({ left: false, names: turn }))
                 }
                 className="absolute bottom-[-22px] left-[-22px]"
               >
@@ -152,7 +153,7 @@ const GameFieldRow: React.FC<{
             {lastRow && swipeAll && i === data.length - 1 && (
               <GameFieldButton
                 onClick={() =>
-                  dispatcher(swipeAllColumns({ top: false, name: swipeAll }))
+                  dispatcher(swipeAllColumns({ top: false, names: swipeAll }))
                 }
                 className="absolute bottom-[-23px] right-[-23px]"
               >

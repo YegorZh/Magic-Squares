@@ -1,26 +1,36 @@
 import React, { useEffect } from 'react';
-import { initializeGameField, swipeRow } from '../../redux/gameFieldSlice';
+import {
+  GameFieldActions,
+  initializeGameField,
+  swipeRow,
+} from '../../redux/gameFieldSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import GameFieldButton from './GameFieldButton';
 import GameFieldRow from './GameFieldRow';
 
 const GameField: React.FC<{
-  swipe?: string;
-  turn?: string;
-  swipeAll?: string;
   name: string;
-}> = ({ swipe, turn, swipeAll, name }) => {
-  const gameField = useAppSelector((state) => state.gameField[name]);
+}> = ({ name }) => {
+  const gameFields = useAppSelector((state) => state.gameField);
+  let field: string[][] = [],
+    actions: GameFieldActions | undefined;
+  if (gameFields[name]) ({ field, actions } = gameFields[name]);
   const dispatcher = useAppDispatch();
 
   return (
     <div className="m-auto">
-      {gameField?.map((row, n) => (
+      {field?.map((row, n) => (
         <div key={n} className="flex gap-2">
-          {swipe && (
+          {actions?.swipe && (
             <GameFieldButton
               onClick={() =>
-                dispatcher(swipeRow({ index: n, left: true, name: swipe }))
+                dispatcher(
+                  swipeRow({
+                    index: n,
+                    left: true,
+                    names: actions?.swipe as string | string[],
+                  })
+                )
               }
             >
               <svg
@@ -43,17 +53,22 @@ const GameField: React.FC<{
             <GameFieldRow
               data={row}
               firstRow={n === 0}
-              lastRow={n === gameField.length - 1}
-              swipe={swipe}
-              turn={turn}
-              swipeAll={swipeAll}
-              name={name}
+              lastRow={n === field.length - 1}
+              swipe={actions?.swipe}
+              turn={actions?.turn}
+              swipeAll={actions?.swipeAll}
             />
           </div>
-          {swipe && (
+          {actions?.swipe && (
             <GameFieldButton
               onClick={() =>
-                dispatcher(swipeRow({ index: n, left: false, name: swipe }))
+                dispatcher(
+                  swipeRow({
+                    index: n,
+                    left: false,
+                    names: actions?.swipe as string | string[],
+                  })
+                )
               }
             >
               <svg
