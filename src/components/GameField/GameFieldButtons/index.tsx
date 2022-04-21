@@ -9,6 +9,7 @@ import {
 import { useAppDispatch } from '../../../redux/hooks';
 import ArrowDown from '../GameFieldIcons/Arrow/Down';
 import ArrowLeft from '../GameFieldIcons/Arrow/Left';
+import ArrowRight from '../GameFieldIcons/Arrow/Right';
 import ArrowUp from '../GameFieldIcons/Arrow/Up';
 import CircleArrow from '../GameFieldIcons/CircleArrow';
 import DoubleArrowDown from '../GameFieldIcons/DoubleArrow/Down';
@@ -75,7 +76,7 @@ const SwipeRightButton: React.FC<{
       className={className}
       onClick={() => dispatcher(swipeRow({ index, names }))}
     >
-      <ArrowLeft />
+      <ArrowRight />
     </GameFieldButton>
   );
 };

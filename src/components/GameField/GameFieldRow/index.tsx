@@ -74,13 +74,13 @@ const GameFieldRow: React.FC<{
             {lastRow && turn && i === 0 && (
               <TurnRightButton
                 names={turn}
-                className="absolute top-[-22px] left-[-22px]"
+                className="absolute bottom-[-22px] left-[-22px]"
               />
             )}
             {lastRow && swipeAll && i === data.length - 1 && (
               <SwipeAllDownButton
                 names={swipeAll}
-                className="absolute top-[-23px] right-[-22px]"
+                className="absolute bottom-[-23px] right-[-22px]"
               />
             )}
           </div>
