@@ -14,19 +14,25 @@ const App = () => {
 
   useEffect(() => {
     const size = 3;
-    dispatcher(initializeGameField({ size, name: leftName }));
+    dispatcher(
+      initializeGameField({ size, name: leftName, actions: { turn: leftName } })
+    );
     dispatcher(
       initializeGameField({
         size,
         name: mainName,
         actions: {
           swipe: 'ALL',
-          turn: leftName,
-          swipeAll: rightName,
         },
       })
     );
-    dispatcher(initializeGameField({ size, name: rightName }));
+    dispatcher(
+      initializeGameField({
+        size,
+        name: rightName,
+        actions: { swipeAll: rightName },
+      })
+    );
   }, []);
 
   return (

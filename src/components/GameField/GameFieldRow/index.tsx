@@ -1,11 +1,5 @@
 import React from 'react';
 import {
-  swipeAllColumns,
-  swipeColumn,
-  turnGameField,
-} from '../../../redux/gameFieldSlice';
-import { useAppDispatch } from '../../../redux/hooks';
-import {
   SwipeAllDownButton,
   SwipeAllUpButton,
   SwipeDownButton,
@@ -13,12 +7,6 @@ import {
   TurnLeftButton,
   TurnRightButton,
 } from '../GameFieldButtons';
-import GameFieldButton from '../GameFieldButtons/Template';
-import ArrowDown from '../GameFieldIcons/Arrow/Down';
-import ArrowUp from '../GameFieldIcons/Arrow/Up';
-import CircleArrow from '../GameFieldIcons/CircleArrow';
-import DoubleArrowDown from '../GameFieldIcons/DoubleArrow/Down';
-import DoubleArrowUp from '../GameFieldIcons/DoubleArrow/Up';
 
 const GameFieldRow: React.FC<{
   data: string[];
@@ -28,7 +16,6 @@ const GameFieldRow: React.FC<{
   turn?: string | string[];
   swipeAll?: string | string[];
 }> = ({ data, firstRow, lastRow, swipe, turn, swipeAll }) => {
-  const dispatcher = useAppDispatch();
   return (
     <div className="flex">
       {data.map((element, i) => {
@@ -45,7 +32,7 @@ const GameFieldRow: React.FC<{
             className={`relative flex h-8 w-8 items-center justify-center rounded-sm border-x
                         border-y border-slate-900 ${element} ${cornerStyle}`}
           >
-            {firstRow && swipe && (
+            {/* {firstRow && swipe && (
               <SwipeUpButton
                 className="absolute top-[-32px]"
                 index={i}
@@ -82,7 +69,7 @@ const GameFieldRow: React.FC<{
                 names={swipeAll}
                 className="absolute bottom-[-23px] right-[-22px]"
               />
-            )}
+            )} */}
           </div>
         );
       })}
