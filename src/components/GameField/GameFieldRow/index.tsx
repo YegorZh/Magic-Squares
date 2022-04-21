@@ -6,6 +6,11 @@ import {
 } from '../../../redux/gameFieldSlice';
 import { useAppDispatch } from '../../../redux/hooks';
 import GameFieldButton from '../GameFieldButton';
+import ArrowDown from '../GameFieldIcons/Arrow/Down';
+import ArrowUp from '../GameFieldIcons/Arrow/Up';
+import CircleArrow from '../GameFieldIcons/CircleArrow';
+import DoubleArrowDown from '../GameFieldIcons/DoubleArrow/Down';
+import DoubleArrowUp from '../GameFieldIcons/DoubleArrow/Up';
 
 const GameFieldRow: React.FC<{
   data: string[];
@@ -39,20 +44,7 @@ const GameFieldRow: React.FC<{
                   dispatcher(swipeColumn({ index: i, top: true, names: swipe }))
                 }
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7 11l5-5m0 0l5 5m-5-5v12"
-                  />
-                </svg>
+                <ArrowUp />
               </GameFieldButton>
             )}
             {firstRow && turn && i === 0 && (
@@ -62,20 +54,7 @@ const GameFieldRow: React.FC<{
                 }
                 className="absolute top-[-22px] left-[-22px]"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
+                <CircleArrow />
               </GameFieldButton>
             )}
             {firstRow && swipeAll && i === data.length - 1 && (
@@ -83,22 +62,9 @@ const GameFieldRow: React.FC<{
                 onClick={() =>
                   dispatcher(swipeAllColumns({ top: true, names: swipeAll }))
                 }
-                className="absolute top-[-24px] right-[-24px]"
+                className="absolute top-[-23px] right-[-22px]"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 11l7-7 7 7M5 19l7-7 7 7"
-                  />
-                </svg>
+                <DoubleArrowUp />
               </GameFieldButton>
             )}
             {/* {element} */}
@@ -111,20 +77,7 @@ const GameFieldRow: React.FC<{
                   )
                 }
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17 13l-5 5m0 0l-5-5m5 5V6"
-                  />
-                </svg>
+                <ArrowDown />
               </GameFieldButton>
             )}
             {lastRow && turn && i === 0 && (
@@ -134,20 +87,7 @@ const GameFieldRow: React.FC<{
                 }
                 className="absolute bottom-[-22px] left-[-22px]"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
+                <CircleArrow />
               </GameFieldButton>
             )}
             {lastRow && swipeAll && i === data.length - 1 && (
@@ -155,22 +95,9 @@ const GameFieldRow: React.FC<{
                 onClick={() =>
                   dispatcher(swipeAllColumns({ top: false, names: swipeAll }))
                 }
-                className="absolute bottom-[-23px] right-[-23px]"
+                className="absolute bottom-[-23px] right-[-22px]"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
-                  />
-                </svg>
+                <DoubleArrowDown />
               </GameFieldButton>
             )}
           </div>
