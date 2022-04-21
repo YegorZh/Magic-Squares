@@ -7,15 +7,34 @@ import {
   turnGameField,
 } from '../../../redux/gameFieldSlice';
 import { useAppDispatch } from '../../../redux/hooks';
-import ArrowDown from '../GameFieldIcons/Arrow/Down';
-import ArrowLeft from '../GameFieldIcons/Arrow/Left';
-import ArrowRight from '../GameFieldIcons/Arrow/Right';
-import ArrowUp from '../GameFieldIcons/Arrow/Up';
+import {
+  ArrowUp,
+  ArrowRight,
+  ArrowDown,
+  ArrowLeft,
+} from '../GameFieldIcons/Arrow';
+import {
+  DoubleArrowUp,
+  DoubleArrowRight,
+  DoubleArrowDown,
+  DoubleArrowLeft,
+} from '../GameFieldIcons/DoubleArrow';
 import CircleArrow from '../GameFieldIcons/CircleArrow';
-import DoubleArrowDown from '../GameFieldIcons/DoubleArrow/Down';
-import DoubleArrowLeft from '../GameFieldIcons/DoubleArrow/Left';
-import DoubleArrowUp from '../GameFieldIcons/DoubleArrow/Up';
-import GameFieldButton from './Template';
+
+const GameFieldButton: React.FC<{
+  children?: JSX.Element | string;
+  className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}> = ({ children, className, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`text-slate-500 hover:text-slate-300 active:text-slate-700 ${className}`}
+    >
+      {children && children}
+    </button>
+  );
+};
 
 const SwipeUpButton: React.FC<{
   index: number;
@@ -136,7 +155,7 @@ const SwipeAllRightButton: React.FC<{
       className={className}
       onClick={() => dispatcher(swipeAllRows({ names }))}
     >
-      <DoubleArrowLeft />
+      <DoubleArrowRight />
     </GameFieldButton>
   );
 };
@@ -171,6 +190,7 @@ const TurnRightButton: React.FC<{
   );
 };
 
+export default GameFieldButton;
 export {
   SwipeUpButton,
   SwipeRightButton,
