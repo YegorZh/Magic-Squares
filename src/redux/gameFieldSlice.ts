@@ -3,6 +3,7 @@ import {
   checkIndex,
   namesCheck,
   rotateField,
+  swipeAllHorizontal,
   swipeAllVertical,
   swipeHorizontal,
   swipeVertical,
@@ -73,7 +74,7 @@ export const gameFieldSlice = createSlice({
       state,
       action: PayloadAction<{
         index?: number;
-        left: boolean;
+        left?: boolean;
         names: string | string[];
       }>
     ) => {
@@ -86,19 +87,19 @@ export const gameFieldSlice = createSlice({
       state,
       action: PayloadAction<{
         index: number;
-        top: boolean;
+        up?: boolean;
         names: string | string[];
       }>
     ) => {
-      const { index, top, names } = action.payload;
+      const { index, up, names } = action.payload;
       allCheck(names, state, (state, name) => {
-        state[name].field = swipeVertical([...state[name].field], index, top);
+        state[name].field = swipeVertical([...state[name].field], index, up);
       });
     },
     turnGameField: (
       state,
       action: PayloadAction<{
-        left: boolean;
+        left?: boolean;
         names: string | string[];
       }>
     ) => {
@@ -109,11 +110,20 @@ export const gameFieldSlice = createSlice({
     },
     swipeAllColumns: (
       state,
-      action: PayloadAction<{ top?: boolean; names: string | string[] }>
+      action: PayloadAction<{ up?: boolean; names: string | string[] }>
     ) => {
-      const { top, names } = action.payload;
+      const { up, names } = action.payload;
       allCheck(names, state, (state, name) => {
-        state[name].field = swipeAllVertical([...state[name].field], top);
+        state[name].field = swipeAllVertical([...state[name].field], up);
+      });
+    },
+    swipeAllRows: (
+      state,
+      action: PayloadAction<{ left?: boolean; names: string | string[] }>
+    ) => {
+      const { left, names } = action.payload;
+      allCheck(names, state, (state, name) => {
+        state[name].field = swipeAllHorizontal([...state[name].field], left);
       });
     },
     randomizeField: (
@@ -198,6 +208,7 @@ export const {
   swipeColumn,
   turnGameField,
   swipeAllColumns,
+  swipeAllRows,
   randomizeField,
 } = gameFieldSlice.actions;
 export default gameFieldSlice.reducer;

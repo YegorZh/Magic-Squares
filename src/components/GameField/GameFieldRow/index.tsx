@@ -5,7 +5,15 @@ import {
   turnGameField,
 } from '../../../redux/gameFieldSlice';
 import { useAppDispatch } from '../../../redux/hooks';
-import GameFieldButton from '../GameFieldButton';
+import {
+  SwipeAllDownButton,
+  SwipeAllUpButton,
+  SwipeDownButton,
+  SwipeUpButton,
+  TurnLeftButton,
+  TurnRightButton,
+} from '../GameFieldButtons';
+import GameFieldButton from '../GameFieldButtons/Template';
 import ArrowDown from '../GameFieldIcons/Arrow/Down';
 import ArrowUp from '../GameFieldIcons/Arrow/Up';
 import CircleArrow from '../GameFieldIcons/CircleArrow';
@@ -38,67 +46,42 @@ const GameFieldRow: React.FC<{
                         border-y border-slate-900 ${element} ${cornerStyle}`}
           >
             {firstRow && swipe && (
-              <GameFieldButton
-                className="absolute bottom-[38px]"
-                onClick={() =>
-                  dispatcher(swipeColumn({ index: i, top: true, names: swipe }))
-                }
-              >
-                <ArrowUp />
-              </GameFieldButton>
+              <SwipeUpButton
+                className="absolute top-[-32px]"
+                index={i}
+                names={swipe}
+              />
             )}
             {firstRow && turn && i === 0 && (
-              <GameFieldButton
-                onClick={() =>
-                  dispatcher(turnGameField({ left: true, names: turn }))
-                }
+              <TurnLeftButton
+                names={turn}
                 className="absolute top-[-22px] left-[-22px]"
-              >
-                <CircleArrow />
-              </GameFieldButton>
+              />
             )}
             {firstRow && swipeAll && i === data.length - 1 && (
-              <GameFieldButton
-                onClick={() =>
-                  dispatcher(swipeAllColumns({ top: true, names: swipeAll }))
-                }
+              <SwipeAllUpButton
+                names={swipeAll}
                 className="absolute top-[-23px] right-[-22px]"
-              >
-                <DoubleArrowUp />
-              </GameFieldButton>
+              />
             )}
-            {/* {element} */}
             {lastRow && swipe && (
-              <GameFieldButton
+              <SwipeDownButton
                 className="absolute bottom-[-32px]"
-                onClick={() =>
-                  dispatcher(
-                    swipeColumn({ index: i, top: false, names: swipe })
-                  )
-                }
-              >
-                <ArrowDown />
-              </GameFieldButton>
+                index={i}
+                names={swipe}
+              />
             )}
             {lastRow && turn && i === 0 && (
-              <GameFieldButton
-                onClick={() =>
-                  dispatcher(turnGameField({ left: false, names: turn }))
-                }
-                className="absolute bottom-[-22px] left-[-22px]"
-              >
-                <CircleArrow />
-              </GameFieldButton>
+              <TurnRightButton
+                names={turn}
+                className="absolute top-[-22px] left-[-22px]"
+              />
             )}
             {lastRow && swipeAll && i === data.length - 1 && (
-              <GameFieldButton
-                onClick={() =>
-                  dispatcher(swipeAllColumns({ top: false, names: swipeAll }))
-                }
-                className="absolute bottom-[-23px] right-[-22px]"
-              >
-                <DoubleArrowDown />
-              </GameFieldButton>
+              <SwipeAllDownButton
+                names={swipeAll}
+                className="absolute top-[-23px] right-[-22px]"
+              />
             )}
           </div>
         );
