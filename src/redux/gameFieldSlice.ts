@@ -11,16 +11,18 @@ import {
 
 const colors = [
   'bg-blue-500',
+  'bg-emerald-600',
+  'bg-amber-500',
+  'bg-slate-400',
   'bg-purple-500',
   'bg-red-500',
-  'bg-orange-500',
-  'bg-yellow-500',
-  'bg-green-600',
+  'bg-slate-300',
 ];
 export type GameFieldActions = {
   swipe?: string[] | string;
   turn?: string[] | string;
-  swipeAll?: string[] | string;
+  swipeAllColumns?: string[] | string;
+  swipeAllRows?: string[] | string;
 };
 
 export interface gameFieldData {
@@ -137,7 +139,7 @@ export const gameFieldSlice = createSlice({
       for (let i = 0; i < n; i++) {
         Object.keys(state).forEach((name) => {
           if (state[name].actions) {
-            const { swipe, swipeAll, turn } = state[name]
+            const { swipe, swipeAllColumns, swipeAllRows, turn } = state[name]
               .actions as GameFieldActions;
             if (swipe && randZeroOrOne()) {
               const randomIndexOne = checkIndex(state[name].field.length);
@@ -162,12 +164,20 @@ export const gameFieldSlice = createSlice({
               );
             }
 
-            if (swipeAll && randZeroOrOne())
+            if (swipeAllColumns && randZeroOrOne())
               allCheck(
-                swipeAll,
+                swipeAllColumns,
                 state,
                 (state, name) =>
                   (state[name].field = swipeAllVertical(state[name].field))
+              );
+
+            if (swipeAllRows && randZeroOrOne())
+              allCheck(
+                swipeAllRows,
+                state,
+                (state, name) =>
+                  (state[name].field = swipeAllHorizontal(state[name].field))
               );
 
             if (turn && randZeroOrOne())

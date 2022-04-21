@@ -15,7 +15,11 @@ const App = () => {
   useEffect(() => {
     const size = 3;
     dispatcher(
-      initializeGameField({ size, name: leftName, actions: { turn: leftName } })
+      initializeGameField({
+        size,
+        name: leftName,
+        actions: { swipeAllRows: leftName },
+      })
     );
     dispatcher(
       initializeGameField({
@@ -30,18 +34,24 @@ const App = () => {
       initializeGameField({
         size,
         name: rightName,
-        actions: { swipeAll: rightName },
+        actions: { swipeAllColumns: rightName },
       })
     );
   }, []);
 
   return (
     <div className="mx-auto flex h-[80%] w-[798px] flex-col rounded-2xl border-x-2 border-slate-700 bg-gray-800 shadow-lg">
-      <div className="h-full"></div>
+      <div className="h-full" />
       <div className="m-auto flex h-full w-full">
-        <GameField name={leftName} />
-        <GameField name={mainName} />
-        <GameField name={rightName} />
+        <div className="flex w-full justify-center">
+          <GameField name={leftName} />
+        </div>
+        <div className="flex w-full justify-center">
+          <GameField name={mainName} />
+        </div>
+        <div className="flex w-full justify-center">
+          <GameField name={rightName} />
+        </div>
       </div>
       <div className="flex h-full items-end justify-center">
         <button

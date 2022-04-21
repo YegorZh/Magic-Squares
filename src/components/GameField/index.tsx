@@ -2,6 +2,8 @@ import React from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import {
   SwipeAllDownButton,
+  SwipeAllLeftButton,
+  SwipeAllRightButton,
   SwipeAllUpButton,
   SwipeDownButton,
   SwipeLeftButton,
@@ -17,63 +19,106 @@ const GameField: React.FC<{
 }> = ({ name }) => {
   const gameFields = useAppSelector((state) => state.gameField);
   const { field, actions } = gameFields[name] || {};
-  const { swipe, swipeAll, turn } = actions || {};
-  const cellSize = { w: 'w-8', h: 'h-8' };
-  const buttonStyles = `items flex justify-center ${cellSize.w}`;
-
+  const { swipe, swipeAllColumns, swipeAllRows, turn } = actions || {};
+  const cellSize = { w: 'w-7', h: 'h-7' };
+  const coverButtonStyles = `flex justify-center ${cellSize.w}`;
+  const sideButtonStyles = `flex items-center ${cellSize.h}`;
   const topButtons: JSX.Element[] = [];
   const bottomButtons: JSX.Element[] = [];
-  if (!swipe && swipeAll) {
+  const leftButtons: JSX.Element[] = [];
+  const rightButtons: JSX.Element[] = [];
+
+  if (!swipe && swipeAllColumns) {
     topButtons.push(
-      <SwipeAllUpButton names={swipeAll} className={buttonStyles} />
+      <SwipeAllUpButton
+        key={1}
+        names={swipeAllColumns}
+        className={coverButtonStyles}
+      />
     );
     bottomButtons.push(
-      <SwipeAllDownButton names={swipeAll} className={buttonStyles} />
+      <SwipeAllDownButton
+        key={1}
+        names={swipeAllColumns}
+        className={coverButtonStyles}
+      />
     );
   }
+
   if (!swipe && turn) {
-    topButtons.push(<TurnLeftButton names={turn} className={buttonStyles} />);
-    bottomButtons.push(
-      <TurnRightButton names={turn} className={buttonStyles} />
+    topButtons.push(
+      <TurnRightButton key={2} names={turn} className={coverButtonStyles} />
     );
+    bottomButtons.push(
+      <TurnLeftButton key={2} names={turn} className={coverButtonStyles} />
+    );
+  }
+
+  if (!swipe && swipeAllRows) {
+    leftButtons.push(<SwipeAllLeftButton key={1} names={swipeAllRows} />);
+    rightButtons.push(<SwipeAllRightButton key={1} names={swipeAllRows} />);
   }
 
   const rows = field?.map((row, n) => {
     if (swipe) {
       topButtons.push(
-        <SwipeUpButton index={n} names={swipe} className={buttonStyles} />
+        <SwipeUpButton
+          key={n}
+          index={n}
+          names={swipe}
+          className={coverButtonStyles}
+        />
       );
       bottomButtons.push(
-        <SwipeDownButton index={n} names={swipe} className={buttonStyles} />
+        <SwipeDownButton
+          key={n}
+          index={n}
+          names={swipe}
+          className={coverButtonStyles}
+        />
+      );
+      leftButtons.push(
+        <SwipeLeftButton
+          key={n}
+          index={n}
+          names={swipe}
+          className={sideButtonStyles}
+        />
+      );
+      rightButtons.push(
+        <SwipeRightButton
+          key={n}
+          index={n}
+          names={swipe}
+          className={sideButtonStyles}
+        />
       );
     }
     return (
-      <div key={n} className="flex gap-2">
-        {swipe && <SwipeLeftButton index={n} names={swipe} />}
-        <div className="rounded-2xl shadow-md">
-          <GameFieldRow
-            data={row}
-            firstRow={n === 0}
-            lastRow={n === field.length - 1}
-            swipe={swipe}
-            turn={turn}
-            swipeAll={swipeAll}
-          />
-        </div>
-        {swipe && <SwipeRightButton index={n} names={swipe} />}
+      <div key={n} className="flex gap-2 rounded-2xl shadow-md">
+        <GameFieldRow
+          data={row}
+          firstRow={n === 0}
+          lastRow={n === field.length - 1}
+          size={cellSize}
+        />
       </div>
     );
   });
 
   return (
-    <div className="m-auto">
-      {topButtons.length > 0 && (
-        <div className="mb-2 flex justify-center">{topButtons}</div>
-      )}
-      {rows}
-      {bottomButtons.length > 0 && (
-        <div className="mt-2 flex justify-center">{bottomButtons}</div>
-      )}
+    <div className="flex items-center justify-center gap-2">
+      <div className="flex flex-col justify-center">{leftButtons}</div>
+      <div>
+        {topButtons.length > 0 && (
+          <div className="mb-2 flex justify-center">{topButtons}</div>
+        )}
+        {rows}
+        {bottomButtons.length > 0 && (
+          <div className="mt-2 flex justify-center">{bottomButtons}</div>
+        )}
+      </div>
+      <div className="flex flex-col justify-center">{rightButtons}</div>
     </div>
   );
 };
