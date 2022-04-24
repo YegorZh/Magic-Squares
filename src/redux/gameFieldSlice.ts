@@ -31,7 +31,7 @@ export interface gameFieldState {
 const initialState: gameFieldState = {
   data: {},
   isWon: false,
-  isStarted: false,
+  isStarted: true,
 };
 
 const winCheck = (state: gameFieldState, name: string) => {
@@ -207,6 +207,9 @@ export const gameFieldSlice = createSlice({
     stopGame: (state) => {
       state.isStarted = false;
     },
+    resetWin: (state) => {
+      state.isWon = false;
+    },
     randomizeField: (
       state,
       action: PayloadAction<{
@@ -298,6 +301,7 @@ export const gameFieldSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   initializeGameField,
+  resetWin,
   swipeRow,
   swipeColumn,
   turnGameField,
