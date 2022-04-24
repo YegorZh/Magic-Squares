@@ -10,3 +10,7 @@ body {
   @apply flex h-screen items-center;
   min-height: stretch;
 }
+
+.dropdown:hover .dropdown-content {
+  @apply pointer-events-auto w-40 opacity-100;
+}

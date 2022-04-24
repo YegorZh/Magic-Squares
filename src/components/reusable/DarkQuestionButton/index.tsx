@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DarkButton from '../DarkButton';
 
 const DarkQuestionButton: React.FC<{
   children?: JSX.Element | string;
+  disabled?: boolean;
   onClick: (event: React.MouseEvent) => any;
-  check: boolean;
-  setCheck: (newValue: boolean) => any;
-}> = ({ children, onClick, check, setCheck }) => {
+}> = ({ children, onClick, disabled }) => {
+  const [check, setCheck] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -22,11 +22,22 @@ const DarkQuestionButton: React.FC<{
   }, [ref]);
 
   if (!check)
-    return <DarkButton onClick={() => setCheck(true)}>{children}</DarkButton>;
+    return (
+      <DarkButton disabled={disabled} onClick={() => setCheck(true)}>
+        {children}
+      </DarkButton>
+    );
   else
     return (
       <div ref={ref} className="space-x-2">
-        <DarkButton onClick={onClick}>Yes</DarkButton>
+        <DarkButton
+          onClick={(event) => {
+            onClick(event);
+            setCheck(false);
+          }}
+        >
+          Yes
+        </DarkButton>
         <DarkButton onClick={() => setCheck(false)}>No</DarkButton>
       </div>
     );

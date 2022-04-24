@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { generateField } from '../../redux/gameFieldLogic';
 import {
   initializeGameField,
   randomizeField,
@@ -14,8 +15,7 @@ import DarkQuestionButton from '../reusable/DarkQuestionButton';
 
 const App = () => {
   const dispatcher = useAppDispatch();
-  const [isRestarting, setIsRestarting] = useState(false);
-  const [isMaining, setIsMaining] = useState(false);
+  const [isWonOneTime, setIsWonOneTime] = useState(false);
   const isStarted = useAppSelector((state) => state.gameField.isStarted);
   const isWon = useAppSelector((state) => state.gameField.isWon);
   const mainName = 'main';
@@ -23,14 +23,13 @@ const App = () => {
   const rightName = 'right';
 
   const startNewGame = () => {
-    setIsRestarting(false);
     dispatcher(resetWin());
     dispatcher(stopGame());
     dispatcher(randomizeField({ n: 1000 }));
     dispatcher(startGame());
   };
+  const size = 3;
   useEffect(() => {
-    const size = 3;
     dispatcher(
       initializeGameField({
         size,
@@ -56,6 +55,7 @@ const App = () => {
     );
   }, []);
 
+  if (!isWonOneTime && isWon) setIsWonOneTime(true);
   return (
     <div className="relative mx-auto flex h-[95%] w-[798px] flex-col rounded-2xl border-x-2 border-slate-700 bg-gray-800 shadow-lg">
       <div className="h-full w-full"></div>
@@ -73,11 +73,7 @@ const App = () => {
       <div className="h-full w-full"></div>
       <div className="flex h-64 items-center justify-around rounded-b-xl bg-slate-700 shadow-inner">
         <div className="flex h-full w-full items-center justify-center">
-          <DarkQuestionButton
-            check={isMaining}
-            setCheck={setIsMaining}
-            onClick={() => alert('back to main menu')}
-          >
+          <DarkQuestionButton onClick={() => alert('back to main menu')}>
             <span className="flex justify-center">
               <ArrowLeft />
               <span>Back to Menu</span>
@@ -88,24 +84,21 @@ const App = () => {
           {!isStarted ? (
             <DarkButton onClick={startNewGame}>Start</DarkButton>
           ) : (
-            <DarkQuestionButton
-              check={isRestarting}
-              setCheck={setIsRestarting}
-              onClick={startNewGame}
-            >
+            <DarkQuestionButton onClick={startNewGame}>
               Restart
             </DarkQuestionButton>
           )}
         </div>
 
         <div className="flex h-full w-full items-center justify-center">
-          {isWon && (
-            <DarkButton>
-              <span className="flex justify-center">
-                <span>Next Level</span> <ArrowRight />
-              </span>
-            </DarkButton>
-          )}
+          <DarkQuestionButton
+            disabled={!isWonOneTime}
+            onClick={() => alert('Next lvl')}
+          >
+            <span className="flex justify-center">
+              <span>Next Level</span> <ArrowRight />
+            </span>
+          </DarkQuestionButton>
         </div>
       </div>
       {isWon && (
@@ -113,6 +106,36 @@ const App = () => {
           You win!
         </p>
       )}
+      <div
+        className="dropdown absolute left-3 top-3 w-1 rounded-t-lg 
+                    text-slate-600 transition-all hover:w-40 hover:bg-slate-700 hover:text-slate-500"
+      >
+        <div className="relative">
+          <div className="p-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <div
+            className="dropdown-content pointer-events-none absolute bottom-0
+                       left-0 w-1 translate-y-full rounded-b-2xl bg-slate-700 py-4 opacity-0
+                       transition-all"
+          >
+            <GameField name={{ field: generateField(size) }} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

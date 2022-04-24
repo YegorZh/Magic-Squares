@@ -1,4 +1,5 @@
 import React from 'react';
+import { gameFieldData } from '../../redux/gameFieldSlice';
 import { useAppSelector } from '../../redux/hooks';
 import {
   SwipeAllDownButton,
@@ -15,10 +16,14 @@ import {
 import GameFieldRow from './GameFieldRow';
 
 const GameField: React.FC<{
-  name: string;
+  name: string | gameFieldData;
 }> = ({ name }) => {
-  const gameFields = useAppSelector((state) => state.gameField.data);
-  const { field, actions } = gameFields[name] || {};
+  let gameField;
+  if (typeof name === 'string') {
+    const gameFields = useAppSelector((state) => state.gameField.data);
+    gameField = gameFields[name] || {};
+  } else gameField = name;
+  const { field, actions } = gameField || {};
   const { swipe, swipeAllColumns, swipeAllRows, turn } = actions || {};
   const cellSize = { w: 'w-7', h: 'h-7' };
   const coverButtonStyles = `flex justify-center ${cellSize.w}`;
