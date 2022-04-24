@@ -17,7 +17,7 @@ import GameFieldRow from './GameFieldRow';
 const GameField: React.FC<{
   name: string;
 }> = ({ name }) => {
-  const gameFields = useAppSelector((state) => state.gameField);
+  const gameFields = useAppSelector((state) => state.gameField.data);
   const { field, actions } = gameFields[name] || {};
   const { swipe, swipeAllColumns, swipeAllRows, turn } = actions || {};
   const cellSize = { w: 'w-7', h: 'h-7' };
