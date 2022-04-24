@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   checkIndex,
+  generateField,
   namesCheck,
   rotateField,
   swipeAllHorizontal,
@@ -9,15 +10,6 @@ import {
   swipeVertical,
 } from './gameFieldLogic';
 
-const colors = [
-  'bg-blue-500',
-  'bg-emerald-600',
-  'bg-amber-500',
-  'bg-slate-400',
-  'bg-purple-500',
-  'bg-red-500',
-  'bg-slate-300',
-];
 export type GameFieldActions = {
   swipe?: string[] | string;
   turn?: string[] | string;
@@ -137,16 +129,7 @@ export const gameFieldSlice = createSlice({
       }>
     ) => {
       const { size, name, actions } = { ...action.payload };
-      if (name !== 'ALL') {
-        const out = [...Array(size)].map(() => [...Array(size)]);
-        for (let i = 0; i < size; i++) {
-          for (let j = 0; j < size; j++) {
-            out[i][j] = colors[i];
-          }
-        }
-
-        state.data[name] = { field: out, actions };
-      }
+      state.data[name] = { field: generateField(size), actions };
     },
     swipeRow: (
       state,
@@ -218,8 +201,11 @@ export const gameFieldSlice = createSlice({
         );
       });
     },
-    start: (state) => {
+    startGame: (state) => {
       state.isStarted = true;
+    },
+    stopGame: (state) => {
+      state.isStarted = false;
     },
     randomizeField: (
       state,
@@ -317,7 +303,8 @@ export const {
   turnGameField,
   swipeAllColumns,
   swipeAllRows,
-  start,
+  startGame,
+  stopGame,
   randomizeField,
 } = gameFieldSlice.actions;
 export default gameFieldSlice.reducer;

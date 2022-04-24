@@ -1,3 +1,16 @@
+const colors = [
+  'bg-blue-500',
+  'bg-emerald-600',
+  'bg-amber-500',
+  'bg-slate-400',
+  'bg-purple-500',
+  'bg-red-500',
+  'bg-slate-300',
+];
+
+const generateField = (size: number) =>
+  [...Array(size)].map((_, i) => [...Array(size)].map(() => colors[i]));
+
 const checkIndex = (size: number, index?: number) => {
   if (index === undefined) index = Math.floor(Math.random() * size);
   return Math.max(0, Math.min(index, size));
@@ -84,6 +97,7 @@ const namesCheck = (names: string | string[]) => {
 };
 
 export {
+  generateField,
   swipeAllHorizontal,
   swipeAllVertical,
   swipeHorizontal,

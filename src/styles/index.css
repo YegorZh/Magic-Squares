@@ -8,4 +8,5 @@ body {
 
 #root {
   @apply flex h-screen items-center;
+  min-height: stretch;
 }
