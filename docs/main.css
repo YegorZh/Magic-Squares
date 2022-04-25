@@ -472,9 +472,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .z-0 {
   z-index: 0;
 }
-.m-auto {
-  margin: auto;
-}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -529,6 +526,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .cursor-default {
   cursor: default;
+}
+.resize {
+  resize: both;
 }
 .flex-col {
   flex-direction: column;
@@ -758,14 +758,15 @@ body {
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
+:root {
+  --app-height: 100vh;
+}
 
 #root {
   display: flex;
-  height: 100vh;
+  width: 100vw;
   align-items: center;
-  min-height: -webkit-fill-available;
-  min-height: -moz-available;
-  min-height: stretch;
+  height: var(--app-height);
 }
 
 .hover\:bg-slate-500:hover {
@@ -800,12 +801,16 @@ body {
 
 @media (min-width: 640px) {
 
-  .sm\:h-\[95\%\] {
-    height: 95%;
+  .sm\:h-\[90\%\] {
+    height: 90%;
   }
 
   .sm\:w-\[798px\] {
     width: 798px;
+  }
+
+  .sm\:rounded-2xl {
+    border-radius: 1rem;
   }
 
   .sm\:py-3 {

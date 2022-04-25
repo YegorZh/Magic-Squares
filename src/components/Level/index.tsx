@@ -63,7 +63,7 @@ const Level: React.FC = () => {
   const dummyField = { field: generateField(size) };
   if (!isWonOneTime && isWon) setIsWonOneTime(true);
   return (
-    <div className="relative flex h-full w-full flex-col rounded-2xl border-x-2 border-slate-700 bg-gray-800 shadow-lg">
+    <div className="relative flex h-full w-full flex-col border-x-2 border-slate-700 bg-gray-800 shadow-lg sm:rounded-2xl">
       <div className="flex h-full w-full items-end">
         <div className="flex w-full justify-center">
           <GameField name={dummyField} />
@@ -75,7 +75,7 @@ const Level: React.FC = () => {
           <GameField name={dummyField} />
         </div>
       </div>
-      <div className="m-auto flex h-full w-full">
+      <div className="flex h-full w-full">
         <div className="flex w-full justify-center">
           <GameField name={leftName} />
         </div>
