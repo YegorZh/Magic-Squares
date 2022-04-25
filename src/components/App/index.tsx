@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { generateField } from '../../redux/gameFieldLogic';
+import { generateField, rotateField } from '../../redux/gameFieldLogic';
 import {
   initializeGameField,
   randomizeField,
@@ -12,6 +12,7 @@ import GameField from '../GameField';
 import { ArrowLeft, ArrowRight } from '../GameField/GameFieldIcons/Arrow';
 import DarkButton from '../reusable/DarkButton';
 import DarkQuestionButton from '../reusable/DarkQuestionButton';
+import Info from './Info';
 
 const App = () => {
   const dispatcher = useAppDispatch();
@@ -106,36 +107,7 @@ const App = () => {
           You win!
         </p>
       )}
-      <div
-        className="dropdown absolute left-3 top-3 w-1 rounded-t-lg 
-                    text-slate-600 transition-all hover:w-40 hover:bg-slate-700 hover:text-slate-500"
-      >
-        <div className="relative">
-          <div className="p-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div
-            className="dropdown-content pointer-events-none absolute bottom-0
-                       left-0 w-1 translate-y-full rounded-b-2xl bg-slate-700 py-4 opacity-0
-                       transition-all"
-          >
-            <GameField name={{ field: generateField(size) }} />
-          </div>
-        </div>
-      </div>
+      <Info size={size} className="absolute left-3 top-3" />
     </div>
   );
 };
