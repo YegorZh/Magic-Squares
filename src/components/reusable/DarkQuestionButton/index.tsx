@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import DarkButton from '../DarkButton';
 
 const DarkQuestionButton: React.FC<{
-  children?: JSX.Element | string;
+  children?: React.ReactNode;
   disabled?: boolean;
   onClick: (event: React.MouseEvent) => any;
 }> = ({ children, onClick, disabled }) => {
@@ -29,7 +29,7 @@ const DarkQuestionButton: React.FC<{
     );
   else
     return (
-      <div ref={ref} className="space-x-2">
+      <div ref={ref} className="flex space-x-2">
         <DarkButton
           onClick={(event) => {
             onClick(event);

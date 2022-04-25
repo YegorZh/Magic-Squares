@@ -210,6 +210,9 @@ export const gameFieldSlice = createSlice({
     resetWin: (state) => {
       state.isWon = false;
     },
+    resetState: (state) => {
+      state = initialState;
+    },
     randomizeField: (
       state,
       action: PayloadAction<{
@@ -300,6 +303,7 @@ export const gameFieldSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  resetState,
   initializeGameField,
   resetWin,
   swipeRow,

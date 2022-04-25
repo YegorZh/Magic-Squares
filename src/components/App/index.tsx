@@ -9,10 +9,16 @@ const appHeight = () => {
 window.addEventListener('resize', appHeight);
 appHeight();
 
+const level = {
+  middleLeft: { turn: 'middleLeft' },
+  middleCenter: { swipe: 'ALL' },
+  middleRight: { swipeAllColumns: 'middleRight' },
+};
+
 const App: React.FC = () => {
   return (
     <div className="mx-auto flex h-full w-full items-center sm:h-[90%] sm:w-[798px]">
-      <Level />;
+      <Level levelData={level} size={3} />
     </div>
   );
 };

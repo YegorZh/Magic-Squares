@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { generateField } from '../../redux/gameFieldLogic';
 import {
+  GameFieldActions,
+  gameFieldData,
   initializeGameField,
   randomizeField,
+  resetState,
   resetWin,
   startGame,
   stopGame,
@@ -18,12 +21,38 @@ import DarkButton from '../reusable/DarkButton';
 import DarkQuestionButton from '../reusable/DarkQuestionButton';
 import Info from './Info';
 import Tooltip from './Tooltip';
+import WinMessage from './WinMessage';
 
-const Level: React.FC = () => {
+const Level: React.FC<{
+  levelData: {
+    readonly [key: string]: GameFieldActions | undefined;
+    topLeft?: GameFieldActions;
+    topCenter?: GameFieldActions;
+    topRight?: GameFieldActions;
+    middleLeft?: GameFieldActions;
+    middleCenter?: GameFieldActions;
+    middleRight?: GameFieldActions;
+    bottomLeft?: GameFieldActions;
+    bottomCenter?: GameFieldActions;
+    bottomRight?: GameFieldActions;
+  };
+  size: number;
+}> = ({ levelData, size }) => {
   const dispatcher = useAppDispatch();
   const [isWonOneTime, setIsWonOneTime] = useState(false);
   const isStarted = useAppSelector((state) => state.gameField.isStarted);
   const isWon = useAppSelector((state) => state.gameField.isWon);
+  const {
+    topLeft,
+    topCenter,
+    topRight,
+    middleLeft,
+    middleCenter,
+    middleRight,
+    bottomLeft,
+    bottomCenter,
+    bottomRight,
+  } = levelData || {};
   const mainName = 'main';
   const leftName = 'left';
   const rightName = 'right';
@@ -34,76 +63,57 @@ const Level: React.FC = () => {
     dispatcher(randomizeField({ n: 1000 }));
     dispatcher(startGame());
   };
-  const size = 3;
+
   useEffect(() => {
-    dispatcher(
-      initializeGameField({
-        size,
-        name: leftName,
-        actions: { turn: leftName },
-      })
-    );
-    dispatcher(
-      initializeGameField({
-        size,
-        name: mainName,
-        actions: {
-          swipe: 'ALL',
-        },
-      })
-    );
-    dispatcher(
-      initializeGameField({
-        size,
-        name: rightName,
-        actions: { swipeAllColumns: rightName },
-      })
-    );
+    dispatcher(resetState());
+    Object.keys(levelData).forEach((key) => {
+      dispatcher(
+        initializeGameField({ size, name: key, actions: levelData[key] })
+      );
+    });
   }, []);
-  const dummyField = { field: generateField(size) };
+
   if (!isWonOneTime && isWon) setIsWonOneTime(true);
   return (
     <div className="relative flex h-full w-full flex-col border-x-2 border-slate-700 bg-gray-800 shadow-lg sm:rounded-2xl">
       <div className="flex h-full w-full items-end">
         <div className="flex w-full justify-center">
-          <GameField name={dummyField} />
+          {topLeft && <GameField name={'topLeft'} />}
         </div>
         <div className="flex w-full justify-center">
-          <GameField name={dummyField} />
+          {topCenter && <GameField name={'topCenter'} />}
         </div>
         <div className="flex w-full justify-center">
-          <GameField name={dummyField} />
+          {topRight && <GameField name={'topRight'} />}
         </div>
       </div>
       <div className="flex h-full w-full">
         <div className="flex w-full justify-center">
-          <GameField name={leftName} />
+          {middleLeft && <GameField name={'middleLeft'} />}
         </div>
         <div className="flex w-full justify-center">
-          <GameField name={mainName} />
+          {middleCenter && <GameField name={'middleCenter'} />}
         </div>
         <div className="flex w-full justify-center">
-          <GameField name={rightName} />
+          {middleRight && <GameField name={'middleRight'} />}
         </div>
       </div>
       <div className="flex h-full w-full items-start">
         <div className="flex w-full justify-center">
-          <GameField name={dummyField} />
+          {bottomLeft && <GameField name={'bottomLeft'} />}
         </div>
         <div className="flex w-full justify-center">
-          <GameField name={dummyField} />
+          {bottomCenter && <GameField name={'bottomCenter'} />}
         </div>
         <div className="flex w-full justify-center">
-          <GameField name={dummyField} />
+          {bottomRight && <GameField name={'bottomRight'} />}
         </div>
       </div>
       <div className="flex h-64 items-center justify-around rounded-b-xl bg-slate-700 shadow-inner">
         <div className="flex h-full w-full items-center justify-center">
           <DarkQuestionButton onClick={() => alert('back to main menu')}>
-            <span className="flex justify-center">
-              <ArrowLeft />
-              <span>To Menu</span>
-            </span>
+            <ArrowLeft />
+            <span>To Menu</span>
           </DarkQuestionButton>
         </div>
         <div className="flex h-full w-full items-center justify-center">
@@ -121,21 +131,15 @@ const Level: React.FC = () => {
             disabled={!isWonOneTime}
             onClick={() => alert('Next lvl')}
           >
-            <span className="flex justify-center">
-              <span>Next Level</span> <ArrowRight />
-            </span>
+            <span>Next Level</span> <ArrowRight />
           </DarkQuestionButton>
         </div>
       </div>
-      {isWon && (
-        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded border-2 border-slate-100 bg-blue-500 p-2 text-slate-300">
-          You win!
-        </p>
-      )}
+      {isWon && <WinMessage className="absolute top-1/2 -translate-y-[115%]" />}
       <Info size={size} className="absolute left-3 top-3" />
       {!isStarted && (
         <Tooltip className="absolute left-12 top-4">
-          <ArrowLeft /> Check wincondition
+          <ArrowLeft /> Check win condition
         </Tooltip>
       )}
       {!isStarted && (

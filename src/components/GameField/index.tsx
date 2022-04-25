@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { gameFieldData } from '../../redux/gameFieldSlice';
 import { useAppSelector } from '../../redux/hooks';
 import {
@@ -25,8 +25,19 @@ const GameField: React.FC<{
   } else gameField = name;
   const { field, actions } = gameField || {};
   const { swipe, swipeAllColumns, swipeAllRows, turn } = actions || {};
-  let cellSize = { w: 'w-7', h: 'h-7' };
-  if (window.innerWidth < 640) cellSize = { w: 'w-6', h: 'h-6' };
+  const [cellSize, setCellSize] = useState({ w: 'w-7', h: 'h-7' });
+
+  useEffect(() => {
+    const checkWidth = () => {
+      if (window.innerWidth < 640) setCellSize({ w: 'w-6', h: 'h-6' });
+      else setCellSize({ w: 'w-7', h: 'h-7' });
+    };
+
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+    return () => window.removeEventListener('resize', checkWidth);
+  }, []);
+
   const coverButtonStyles = `flex justify-center ${cellSize.w}`;
   const sideButtonStyles = `flex items-center ${cellSize.h}`;
   const topButtons: JSX.Element[] = [];
