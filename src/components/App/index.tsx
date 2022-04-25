@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { generateField, rotateField } from '../../redux/gameFieldLogic';
 import {
   initializeGameField,
   randomizeField,
@@ -9,10 +8,15 @@ import {
 } from '../../redux/gameFieldSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import GameField from '../GameField';
-import { ArrowLeft, ArrowRight } from '../GameField/GameFieldIcons/Arrow';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+} from '../GameField/GameFieldIcons/Arrow';
 import DarkButton from '../reusable/DarkButton';
 import DarkQuestionButton from '../reusable/DarkQuestionButton';
 import Info from './Info';
+import Tooltip from './Tooltip';
 
 const App = () => {
   const dispatcher = useAppDispatch();
@@ -108,6 +112,16 @@ const App = () => {
         </p>
       )}
       <Info size={size} className="absolute left-3 top-3" />
+      {!isStarted && (
+        <Tooltip className="absolute left-12 top-4">
+          <ArrowLeft /> Check wincondition
+        </Tooltip>
+      )}
+      {!isStarted && (
+        <Tooltip className="absolute bottom-16 left-1/2 -translate-x-1/2">
+          <ArrowUp /> Try out controls before starting <ArrowUp />
+        </Tooltip>
+      )}
     </div>
   );
 };

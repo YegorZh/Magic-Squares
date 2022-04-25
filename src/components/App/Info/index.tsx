@@ -13,7 +13,7 @@ const Info: React.FC<{ size: number; className?: string }> = ({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`dropdown rounded-t-lg 
+      className={`dropdown z-10 rounded-t-lg
                     text-slate-600 transition-all hover:text-slate-500 ${className}`}
     >
       <div className="relative">
@@ -40,11 +40,11 @@ const Info: React.FC<{ size: number; className?: string }> = ({
                          isHovered ? hoverClasses : defaultClasses
                        }`}
         >
-          <h3 className="w-full cursor-default pt-2 text-center font-semibold uppercase -tracking-tighter">
+          <p className="w-full cursor-default pt-2 text-center font-semibold uppercase -tracking-tighter">
             Win
             <br /> if all squares are
             <br /> the same
-          </h3>
+          </p>
           <div className="flex w-full items-center justify-center py-4">
             <GameField name={{ field: generateField(size) }} />
             <h3 className="w-full cursor-default text-center font-semibold uppercase -tracking-tighter">
