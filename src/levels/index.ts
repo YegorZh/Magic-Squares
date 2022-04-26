@@ -28,7 +28,7 @@ const levels: LevelData[] = [
     size: defaultSize,
     structure: {
       middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: { swipe: 'ALL' },
+      middleCenter: {},
       middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
     },
   },

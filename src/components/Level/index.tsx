@@ -28,6 +28,7 @@ const Level: React.FC<{
   const dispatcher = useAppDispatch();
   const [isWonOneTime, setIsWonOneTime] = useState(false);
   const isStarted = useAppSelector((state) => state.gameField.isStarted);
+  console.log(isStarted);
   const isWon = useAppSelector((state) => state.gameField.isWon);
   const { structure, name, size } = levels[currentLevel];
   const {
@@ -50,12 +51,17 @@ const Level: React.FC<{
   };
 
   useEffect(() => {
-    dispatcher(resetState());
+    console.log('hi');
+    const clean = () => {
+      dispatcher(resetState());
+    };
+    clean();
     Object.keys(structure).forEach((key) => {
       dispatcher(
         initializeGameField({ size, name: key, actions: structure[key] })
       );
     });
+    return clean;
   }, [currentLevel]);
 
   if (!isWonOneTime && isWon) setIsWonOneTime(true);

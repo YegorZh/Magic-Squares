@@ -27,18 +27,16 @@ const Menu: React.FC = () => {
   let titleJSX: JSX.Element[] = [];
   // comment for PurgeCSS text-blue-500 text-emerald-600 text-amber-500 text-slate-400 text-purple-500 text-red-500 text-slate-300 text-blue-500 text-emerald-600 text-amber-500 text-slate-400 text-purple-500 text-red-500
   for (let i = 0; i < title.length; i++) {
-    console.log(colors[i % 7].replace('bg', 'text'));
     titleJSX.push(
       <span key={i} className={colors[i % 7].replace('bg', 'text')}>
         {title[i]}
       </span>
     );
   }
-  console.log(currentPage);
 
   return (
     <div className="m:auto relative flex h-full flex-1 flex-col gap-3 overflow-y-auto py-4">
-      <h1 className="mx-auto mt-auto whitespace-nowrap border-l-red-500 text-[34px] font-bold uppercase sm:text-[48px]">
+      <h1 className="mx-auto mt-auto  whitespace-nowrap border-l-red-500 text-[34px] font-bold uppercase sm:text-[48px]">
         {titleJSX}
       </h1>
       <div className="mx-auto mt-auto flex flex-col space-y-3">

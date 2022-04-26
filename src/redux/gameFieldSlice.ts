@@ -11,7 +11,8 @@ import {
 } from './gameFieldLogic';
 
 export type GameFieldActions = {
-  swipe?: string[] | string;
+  swipeColumn?: string[] | string;
+  swipeRow?: string[] | string;
   turn?: string[] | string;
   swipeAllColumns?: string[] | string;
   swipeAllRows?: string[] | string;
@@ -211,7 +212,9 @@ export const gameFieldSlice = createSlice({
       state.isWon = false;
     },
     resetState: (state) => {
-      state = initialState;
+      state.data = {};
+      state.isStarted = false;
+      state.isWon = false;
     },
     randomizeField: (
       state,
@@ -224,28 +227,35 @@ export const gameFieldSlice = createSlice({
       for (let i = 0; i < n; i++) {
         Object.keys(state.data).forEach((name) => {
           if (state.data[name].actions) {
-            const { swipe, swipeAllColumns, swipeAllRows, turn } = state.data[
-              name
-            ].actions as GameFieldActions;
-            if (swipe && randZeroOrOne()) {
-              const randomIndexOne = checkIndex(state.data[name].field.length);
-              const randomIndexTwo = checkIndex(state.data[name].field.length);
+            const {
+              swipeRow,
+              swipeColumn,
+              swipeAllColumns,
+              swipeAllRows,
+              turn,
+            } = state.data[name].actions as GameFieldActions;
+            if (swipeColumn && randZeroOrOne()) {
+              const randomIndex = checkIndex(state.data[name].field.length);
               allCheck(
-                swipe,
+                swipeColumn,
                 state,
                 (state, name) =>
                   (state.data[name].field = swipeVertical(
                     state.data[name].field,
-                    randomIndexOne
+                    randomIndex
                   ))
               );
+            }
+
+            if (swipeRow && randZeroOrOne()) {
+              const randomIndex = checkIndex(state.data[name].field.length);
               allCheck(
-                swipe,
+                swipeRow,
                 state,
                 (state, name) =>
                   (state.data[name].field = swipeHorizontal(
                     state.data[name].field,
-                    randomIndexTwo
+                    randomIndex
                   ))
               );
             }

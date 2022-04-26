@@ -24,7 +24,8 @@ const GameField: React.FC<{
     gameField = gameFields[name] || {};
   } else gameField = name;
   const { field, actions } = gameField || {};
-  const { swipe, swipeAllColumns, swipeAllRows, turn } = actions || {};
+  const { swipeColumn, swipeRow, swipeAllColumns, swipeAllRows, turn } =
+    actions || {};
   const [cellSize, setCellSize] = useState({ w: 'w-7', h: 'h-7' });
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const GameField: React.FC<{
   const leftButtons: JSX.Element[] = [];
   const rightButtons: JSX.Element[] = [];
 
-  if (!swipe && swipeAllColumns) {
+  if (!swipeColumn && swipeAllColumns) {
     topButtons.push(
       <SwipeAllUpButton
         key={1}
@@ -63,7 +64,7 @@ const GameField: React.FC<{
     );
   }
 
-  if (!swipe && turn) {
+  if (!swipeColumn && turn) {
     topButtons.push(
       <TurnRightButton key={2} names={turn} className={coverButtonStyles} />
     );
@@ -72,18 +73,18 @@ const GameField: React.FC<{
     );
   }
 
-  if (!swipe && swipeAllRows) {
+  if (!swipeColumn && swipeAllRows) {
     leftButtons.push(<SwipeAllLeftButton key={1} names={swipeAllRows} />);
     rightButtons.push(<SwipeAllRightButton key={1} names={swipeAllRows} />);
   }
 
   const rows = field?.map((row, n) => {
-    if (swipe) {
+    if (swipeColumn) {
       topButtons.push(
         <SwipeUpButton
           key={n}
           index={n}
-          names={swipe}
+          names={swipeColumn}
           className={coverButtonStyles}
         />
       );
@@ -91,26 +92,28 @@ const GameField: React.FC<{
         <SwipeDownButton
           key={n}
           index={n}
-          names={swipe}
+          names={swipeColumn}
           className={coverButtonStyles}
         />
       );
-      leftButtons.push(
-        <SwipeLeftButton
-          key={n}
-          index={n}
-          names={swipe}
-          className={sideButtonStyles}
-        />
-      );
-      rightButtons.push(
-        <SwipeRightButton
-          key={n}
-          index={n}
-          names={swipe}
-          className={sideButtonStyles}
-        />
-      );
+      if (swipeRow) {
+        leftButtons.push(
+          <SwipeLeftButton
+            key={n}
+            index={n}
+            names={swipeRow}
+            className={sideButtonStyles}
+          />
+        );
+        rightButtons.push(
+          <SwipeRightButton
+            key={n}
+            index={n}
+            names={swipeRow}
+            className={sideButtonStyles}
+          />
+        );
+      }
     }
     return (
       <div key={n} className="flex gap-2 rounded-2xl shadow-md">

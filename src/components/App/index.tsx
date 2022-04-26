@@ -16,9 +16,7 @@ appHeight();
 const App: React.FC = () => {
   const currentLevel = useAppSelector((state) => state.appState.currentLevel);
   const menuState = useAppSelector((state) => state.appState.menuState);
-  const { structure, size } = levels[currentLevel] || {};
 
-  console.log(currentLevel);
   return (
     <div
       className="relative mx-auto flex h-full w-full items-center border-x-2
