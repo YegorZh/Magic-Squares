@@ -29,8 +29,9 @@ const GameField: React.FC<{
 
   useEffect(() => {
     const checkWidth = () => {
-      if (window.innerWidth < 640) setCellSize({ w: 'w-6', h: 'h-6' });
-      else setCellSize({ w: 'w-7', h: 'h-7' });
+      if (window.matchMedia('(min-width: 640px)').matches)
+        setCellSize({ w: 'w-7', h: 'h-7' });
+      else setCellSize({ w: 'w-6', h: 'h-6' });
     };
 
     checkWidth();

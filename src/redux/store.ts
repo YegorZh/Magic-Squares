@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import appStateSlice from './appStateSlice';
 import gameFieldSlice from './gameFieldSlice';
 
 export const store = configureStore({
   reducer: {
     gameField: gameFieldSlice,
+    appState: appStateSlice,
   },
 });
 

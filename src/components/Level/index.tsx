@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { LevelStructure } from '../../levels';
+import {
+  nextLevel,
+  setCurrentLevel,
+  setMenuState,
+} from '../../redux/appStateSlice';
 import { generateField } from '../../redux/gameFieldLogic';
 import {
   GameFieldActions,
@@ -24,20 +30,9 @@ import Tooltip from './Tooltip';
 import WinMessage from './WinMessage';
 
 const Level: React.FC<{
-  levelData: {
-    readonly [key: string]: GameFieldActions | undefined;
-    topLeft?: GameFieldActions;
-    topCenter?: GameFieldActions;
-    topRight?: GameFieldActions;
-    middleLeft?: GameFieldActions;
-    middleCenter?: GameFieldActions;
-    middleRight?: GameFieldActions;
-    bottomLeft?: GameFieldActions;
-    bottomCenter?: GameFieldActions;
-    bottomRight?: GameFieldActions;
-  };
+  levelStructure: LevelStructure;
   size: number;
-}> = ({ levelData, size }) => {
+}> = ({ levelStructure, size }) => {
   const dispatcher = useAppDispatch();
   const [isWonOneTime, setIsWonOneTime] = useState(false);
   const isStarted = useAppSelector((state) => state.gameField.isStarted);
@@ -52,10 +47,7 @@ const Level: React.FC<{
     bottomLeft,
     bottomCenter,
     bottomRight,
-  } = levelData || {};
-  const mainName = 'main';
-  const leftName = 'left';
-  const rightName = 'right';
+  } = levelStructure || {};
 
   const startNewGame = () => {
     dispatcher(resetWin());
@@ -66,16 +58,16 @@ const Level: React.FC<{
 
   useEffect(() => {
     dispatcher(resetState());
-    Object.keys(levelData).forEach((key) => {
+    Object.keys(levelStructure).forEach((key) => {
       dispatcher(
-        initializeGameField({ size, name: key, actions: levelData[key] })
+        initializeGameField({ size, name: key, actions: levelStructure[key] })
       );
     });
   }, []);
 
   if (!isWonOneTime && isWon) setIsWonOneTime(true);
   return (
-    <div className="relative flex h-full w-full flex-col border-x-2 border-slate-700 bg-gray-800 shadow-lg sm:rounded-2xl">
+    <div className="relative flex h-full w-full flex-col ">
       <div className="flex h-full w-full items-end">
         <div className="flex w-full justify-center">
           {topLeft && <GameField name={'topLeft'} />}
@@ -111,7 +103,7 @@ const Level: React.FC<{
       </div>
       <div className="flex h-64 items-center justify-around rounded-b-xl bg-slate-700 shadow-inner">
         <div className="flex h-full w-full items-center justify-center">
-          <DarkQuestionButton onClick={() => alert('back to main menu')}>
+          <DarkQuestionButton onClick={() => dispatcher(setMenuState('menu'))}>
             <ArrowLeft />
             <span>To Menu</span>
           </DarkQuestionButton>
@@ -129,7 +121,7 @@ const Level: React.FC<{
         <div className="flex h-full w-full items-center justify-center">
           <DarkQuestionButton
             disabled={!isWonOneTime}
-            onClick={() => alert('Next lvl')}
+            onClick={() => dispatcher(nextLevel())}
           >
             <span>Next Level</span> <ArrowRight />
           </DarkQuestionButton>
