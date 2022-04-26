@@ -28,7 +28,6 @@ const Level: React.FC<{
   const dispatcher = useAppDispatch();
   const [isWonOneTime, setIsWonOneTime] = useState(false);
   const isStarted = useAppSelector((state) => state.gameField.isStarted);
-  console.log(isStarted);
   const isWon = useAppSelector((state) => state.gameField.isWon);
   const { structure, name, size } = levels[currentLevel];
   const {
@@ -51,7 +50,6 @@ const Level: React.FC<{
   };
 
   useEffect(() => {
-    console.log('hi');
     const clean = () => {
       dispatcher(resetState());
     };

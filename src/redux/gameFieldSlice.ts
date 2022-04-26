@@ -223,72 +223,81 @@ export const gameFieldSlice = createSlice({
       }>
     ) => {
       const { n } = action.payload;
-      const randZeroOrOne = () => Math.round(Math.random());
-      for (let i = 0; i < n; i++) {
-        Object.keys(state.data).forEach((name) => {
-          if (state.data[name].actions) {
-            const {
-              swipeRow,
-              swipeColumn,
-              swipeAllColumns,
-              swipeAllRows,
-              turn,
-            } = state.data[name].actions as GameFieldActions;
-            if (swipeColumn && randZeroOrOne()) {
-              const randomIndex = checkIndex(state.data[name].field.length);
-              allCheck(
-                swipeColumn,
-                state,
-                (state, name) =>
-                  (state.data[name].field = swipeVertical(
-                    state.data[name].field,
-                    randomIndex
-                  ))
-              );
-            }
-
-            if (swipeRow && randZeroOrOne()) {
-              const randomIndex = checkIndex(state.data[name].field.length);
-              allCheck(
+      let i = 0;
+      while (winCheck(state, Object.keys(state.data)[0])) {
+        if (i > 100)
+          throw new Error(
+            '100 iterations of n times couldnt randomize gameField. Try setting higher n or remaking the level'
+          );
+        const randZeroOrOne = () => Math.round(Math.random());
+        for (let i = 0; i < n; i++) {
+          Object.keys(state.data).forEach((name) => {
+            if (state.data[name].actions) {
+              const {
                 swipeRow,
-                state,
-                (state, name) =>
-                  (state.data[name].field = swipeHorizontal(
-                    state.data[name].field,
-                    randomIndex
-                  ))
-              );
-            }
-
-            if (swipeAllColumns && randZeroOrOne())
-              allCheck(
+                swipeColumn,
                 swipeAllColumns,
-                state,
-                (state, name) =>
-                  (state.data[name].field = swipeAllVertical(
-                    state.data[name].field
-                  ))
-              );
-
-            if (swipeAllRows && randZeroOrOne())
-              allCheck(
                 swipeAllRows,
-                state,
-                (state, name) =>
-                  (state.data[name].field = swipeAllHorizontal(
-                    state.data[name].field
-                  ))
-              );
-
-            if (turn && randZeroOrOne())
-              allCheck(
                 turn,
-                state,
-                (state, name) =>
-                  (state.data[name].field = rotateField(state.data[name].field))
-              );
-          }
-        });
+              } = state.data[name].actions as GameFieldActions;
+              if (swipeColumn && randZeroOrOne()) {
+                const randomIndex = checkIndex(state.data[name].field.length);
+                allCheck(
+                  swipeColumn,
+                  state,
+                  (state, name) =>
+                    (state.data[name].field = swipeVertical(
+                      state.data[name].field,
+                      randomIndex
+                    ))
+                );
+              }
+
+              if (swipeRow && randZeroOrOne()) {
+                const randomIndex = checkIndex(state.data[name].field.length);
+                allCheck(
+                  swipeRow,
+                  state,
+                  (state, name) =>
+                    (state.data[name].field = swipeHorizontal(
+                      state.data[name].field,
+                      randomIndex
+                    ))
+                );
+              }
+
+              if (swipeAllColumns && randZeroOrOne())
+                allCheck(
+                  swipeAllColumns,
+                  state,
+                  (state, name) =>
+                    (state.data[name].field = swipeAllVertical(
+                      state.data[name].field
+                    ))
+                );
+
+              if (swipeAllRows && randZeroOrOne())
+                allCheck(
+                  swipeAllRows,
+                  state,
+                  (state, name) =>
+                    (state.data[name].field = swipeAllHorizontal(
+                      state.data[name].field
+                    ))
+                );
+
+              if (turn && randZeroOrOne())
+                allCheck(
+                  turn,
+                  state,
+                  (state, name) =>
+                    (state.data[name].field = rotateField(
+                      state.data[name].field
+                    ))
+                );
+            }
+          });
+        }
       }
 
       // for (let i = 0; i < n; i++) {
