@@ -30,7 +30,7 @@ export interface gameFieldState {
 
 const initialState: gameFieldState = {
   data: {},
-  isWon: true,
+  isWon: false,
   isStarted: false,
 };
 

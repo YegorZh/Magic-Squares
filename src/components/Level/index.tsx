@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { LevelStructure } from '../../levels';
+import { nextLevel, setMenuState } from '../../redux/appStateSlice';
 import {
-  nextLevel,
-  setCurrentLevel,
-  setMenuState,
-} from '../../redux/appStateSlice';
-import { generateField } from '../../redux/gameFieldLogic';
-import {
-  GameFieldActions,
-  gameFieldData,
   initializeGameField,
   randomizeField,
   resetState,
@@ -28,15 +20,16 @@ import DarkQuestionButton from '../reusable/DarkQuestionButton';
 import Info from './Info';
 import Tooltip from './Tooltip';
 import WinMessage from './WinMessage';
+import levels from '../../levels';
 
 const Level: React.FC<{
-  levelStructure: LevelStructure;
-  size: number;
-}> = ({ levelStructure, size }) => {
+  currentLevel: number;
+}> = ({ currentLevel }) => {
   const dispatcher = useAppDispatch();
   const [isWonOneTime, setIsWonOneTime] = useState(false);
   const isStarted = useAppSelector((state) => state.gameField.isStarted);
   const isWon = useAppSelector((state) => state.gameField.isWon);
+  const { structure, name, size } = levels[currentLevel];
   const {
     topLeft,
     topCenter,
@@ -47,7 +40,7 @@ const Level: React.FC<{
     bottomLeft,
     bottomCenter,
     bottomRight,
-  } = levelStructure || {};
+  } = structure || {};
 
   const startNewGame = () => {
     dispatcher(resetWin());
@@ -58,16 +51,19 @@ const Level: React.FC<{
 
   useEffect(() => {
     dispatcher(resetState());
-    Object.keys(levelStructure).forEach((key) => {
+    Object.keys(structure).forEach((key) => {
       dispatcher(
-        initializeGameField({ size, name: key, actions: levelStructure[key] })
+        initializeGameField({ size, name: key, actions: structure[key] })
       );
     });
-  }, []);
+  }, [currentLevel]);
 
   if (!isWonOneTime && isWon) setIsWonOneTime(true);
   return (
     <div className="relative flex h-full w-full flex-col ">
+      <div className="absolute top-5 left-1/2 -translate-x-1/2 uppercase text-slate-600">
+        {name}
+      </div>
       <div className="flex h-full w-full items-end">
         <div className="flex w-full justify-center">
           {topLeft && <GameField name={'topLeft'} />}
@@ -127,7 +123,9 @@ const Level: React.FC<{
           </DarkQuestionButton>
         </div>
       </div>
-      {isWon && <WinMessage className="absolute top-1/2 -translate-y-[115%]" />}
+      {isWon && (
+        <WinMessage className="pointer-events-none absolute top-1/2 translate-y-2" />
+      )}
       <Info size={size} className="absolute left-3 top-3" />
       {!isStarted && (
         <Tooltip className="absolute left-12 top-4">

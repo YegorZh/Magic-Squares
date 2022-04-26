@@ -1,4 +1,4 @@
-const colors = [
+export const colors = [
   'bg-blue-500',
   'bg-emerald-600',
   'bg-amber-500',

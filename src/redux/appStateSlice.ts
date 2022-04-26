@@ -35,7 +35,7 @@ const appState = createSlice({
       state.currentLevel = newLevel;
     },
     nextLevel: (state) => {
-      const newLevel = state.currentLevel - 1;
+      const newLevel = state.currentLevel + 1;
       checkCurrentLevel(newLevel);
       state.currentLevel = state.currentLevel + 1;
     },

@@ -12,24 +12,21 @@ const appHeight = () => {
 
 window.addEventListener('resize', appHeight);
 appHeight();
-type AppState = 'menu' | 'level';
 
 const App: React.FC = () => {
-  const appState = useAppSelector((state) => state.appState);
-  const { currentLevel, menuState } = appState || {};
+  const currentLevel = useAppSelector((state) => state.appState.currentLevel);
+  const menuState = useAppSelector((state) => state.appState.menuState);
   const { structure, size } = levels[currentLevel] || {};
 
+  console.log(currentLevel);
   return (
     <div
       className="relative mx-auto flex h-full w-full items-center border-x-2
               border-slate-700 bg-gray-800 shadow-lg sm:h-[90%]
                 sm:w-[798px] sm:rounded-2xl"
     >
-      {menuState === 'menu' ? (
-        <Menu />
-      ) : (
-        <Level levelStructure={structure} size={size} />
-      )}
+      <div className={`hidden ${currentLevel}`} />
+      {menuState === 'menu' ? <Menu /> : <Level currentLevel={currentLevel} />}
     </div>
   );
 };

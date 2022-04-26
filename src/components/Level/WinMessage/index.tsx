@@ -11,7 +11,7 @@ const WinMessage: React.FC<{ className?: string; message?: string }> = ({
   return (
     <div
       className={`w-full bg-slate-700 transition-all ${
-        firstSpawn ? 'opacity-0' : 'opacity-100'
+        firstSpawn ? 'opacity-0' : 'opacity-70'
       } ${className}`}
     >
       <p

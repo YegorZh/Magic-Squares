@@ -28,7 +28,7 @@ const levels: LevelData[] = [
     size: defaultSize,
     structure: {
       middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: {},
+      middleCenter: { swipe: 'ALL' },
       middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
     },
   },
@@ -114,7 +114,7 @@ const levels: LevelData[] = [
   },
   {
     name: 'Level 10',
-    id: 10,
+    id: 9,
     size: defaultSize,
     structure: {
       middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
@@ -124,7 +124,7 @@ const levels: LevelData[] = [
   },
   {
     name: 'Level ???',
-    id: 11,
+    id: 10,
     size: defaultSize,
     structure: {
       middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },

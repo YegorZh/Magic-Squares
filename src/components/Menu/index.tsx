@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
 import levels from '../../levels';
 import { setCurrentLevel, setMenuState } from '../../redux/appStateSlice';
 import { useAppDispatch } from '../../redux/hooks';
+import React, { useState } from 'react';
 import GameFieldButton from '../GameField/GameFieldButtons';
 import { ArrowLeft, ArrowRight } from '../GameField/GameFieldIcons/Arrow';
 import DarkButton from '../reusable/DarkButton';
+import { colors } from '../../redux/gameFieldLogic';
 
 const Menu: React.FC = () => {
   const dispatcher = useAppDispatch();
@@ -22,10 +23,24 @@ const Menu: React.FC = () => {
       return newPage;
     });
   };
+  let title = 'Magic Squares';
+  let titleJSX: JSX.Element[] = [];
+  // comment for PurgeCSS text-blue-500 text-emerald-600 text-amber-500 text-slate-400 text-purple-500 text-red-500 text-slate-300 text-blue-500 text-emerald-600 text-amber-500 text-slate-400 text-purple-500 text-red-500
+  for (let i = 0; i < title.length; i++) {
+    console.log(colors[i % 7].replace('bg', 'text'));
+    titleJSX.push(
+      <span key={i} className={colors[i % 7].replace('bg', 'text')}>
+        {title[i]}
+      </span>
+    );
+  }
   console.log(currentPage);
 
   return (
     <div className="m:auto relative flex h-full flex-1 flex-col gap-3 overflow-y-auto py-4">
+      <h1 className="mx-auto mt-auto whitespace-nowrap border-l-red-500 text-[34px] font-bold uppercase sm:text-[48px]">
+        {titleJSX}
+      </h1>
       <div className="mx-auto mt-auto flex flex-col space-y-3">
         {levels
           .slice(currentPage * rowsPerPage, rowsPerPage * (currentPage + 1))
