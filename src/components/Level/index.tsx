@@ -50,6 +50,7 @@ const Level: React.FC<{
   };
 
   useEffect(() => {
+    setIsWonOneTime(false);
     const clean = () => {
       dispatcher(resetState());
     };
@@ -62,7 +63,12 @@ const Level: React.FC<{
     return clean;
   }, [currentLevel]);
 
-  if (!isWonOneTime && isWon) setIsWonOneTime(true);
+  if (!isWonOneTime && isWon) {
+    setIsWonOneTime(true);
+    const levelsCompleted = localStorage.getItem('levelsCompleted');
+    if (!levelsCompleted || Number(levelsCompleted) <= currentLevel)
+      localStorage.setItem('levelsCompleted', (currentLevel + 1).toString());
+  }
   return (
     <div className="relative flex h-full w-full flex-col ">
       <div className="absolute top-5 left-1/2 -translate-x-1/2 uppercase text-slate-600">
