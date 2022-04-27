@@ -1,6 +1,5 @@
 ﻿# Magic Squares
 
- <h2>What's this?</h2>
  <p>Puzzle game prototype made with React, Tailwind and Redux.<br>
  <a href="">Link</a></p>
 
