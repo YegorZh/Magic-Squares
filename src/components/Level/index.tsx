@@ -81,7 +81,7 @@ const Level: React.FC<{
           height={divRef.current?.offsetHeight}
         />
       )}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 uppercase text-slate-600">
+      <div className="absolute top-5 left-1/2 -translate-x-full uppercase text-slate-600">
         {name}
       </div>
       <div className="flex h-full w-full items-end">
