@@ -1,17 +1,8 @@
-﻿# Simple React App Template
+﻿# Magic Squares
 
- <h2>How to use this template?</h2>
- Use this template by typing "git init" followed by "git pull https://github.com/YegorZh/SimpleReactAppTemplate main" in desired folder.
- 
- <h2>What's included?</h2>
- <ol>
-  <li>TypeScript</li>
-  <li>Webpack</li>
-  <li>React</li>
-  <li>Sass</li>
-  <li>Tailwind</li>
-  <li>Prettier</li>
- </ol>
+ <h2>What's this?</h2>
+ <p>Puzzle game prototype made with React, Tailwind and Redux.<br>
+ <a href="">Link</a></p>
 
 <h2>Scripts</h2>
 <h3>npm start</h3>
