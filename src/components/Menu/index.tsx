@@ -59,7 +59,7 @@ const Menu: React.FC = () => {
         {levelsToRender.map((level, i) => (
           <DarkButton
             disabled={
-              level.id > levelsCompleted && level.id < levels.length - 3
+              level.id > levelsCompleted && levelsCompleted < levels.length - 3
             }
             nonResponsive
             key={level.id}
