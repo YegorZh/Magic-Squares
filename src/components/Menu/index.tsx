@@ -33,39 +33,52 @@ const Menu: React.FC = () => {
       </span>
     );
   }
+  const levelsToRender = levels.slice(
+    currentPage * rowsPerPage,
+    rowsPerPage * (currentPage + 1)
+  );
 
+  const isFirstPage = currentPage <= 0;
+  const isLastPage = currentPage >= maxPages;
   return (
     <div className="m:auto relative flex h-full flex-1 flex-col gap-3 overflow-y-auto py-4">
       <h1 className="mx-auto mt-auto  whitespace-nowrap border-l-red-500 text-[34px] font-bold uppercase sm:text-[48px]">
         {titleJSX}
       </h1>
       <div className="mx-auto mt-auto flex flex-col space-y-3">
-        {levels
-          .slice(currentPage * rowsPerPage, rowsPerPage * (currentPage + 1))
-          .map((level) => (
-            <DarkButton
-              nonResponsive
-              key={level.id}
-              onClick={() => {
-                dispatcher(setMenuState('level'));
-                dispatcher(setCurrentLevel(level.id));
-              }}
-            >
-              {level.name}
-            </DarkButton>
-          ))}
+        {levelsToRender.map((level) => (
+          <DarkButton
+            nonResponsive
+            key={level.id}
+            onClick={() => {
+              dispatcher(setMenuState('level'));
+              dispatcher(setCurrentLevel(level.id));
+            }}
+          >
+            {level.name}
+          </DarkButton>
+        ))}
+        {[...Array(rowsPerPage - levelsToRender.length)].map((_, i) => (
+          <div key={i} className="opacity-0">
+            <DarkButton disabled>Level</DarkButton>
+          </div>
+        ))}
       </div>
       <div className="mb-auto flex justify-center">
-        {currentPage > 0 && (
-          <GameFieldButton onClick={() => clickHandler(-1)}>
-            <ArrowLeft />
-          </GameFieldButton>
-        )}
-        {currentPage < maxPages && (
-          <GameFieldButton onClick={() => clickHandler(1)}>
-            <ArrowRight />
-          </GameFieldButton>
-        )}
+        <GameFieldButton
+          onClick={() => clickHandler(-1)}
+          disabled={isFirstPage}
+          className={`${isFirstPage && 'opacity-0'}`}
+        >
+          <ArrowLeft />
+        </GameFieldButton>
+        <GameFieldButton
+          onClick={() => clickHandler(1)}
+          disabled={isLastPage}
+          className={`${isLastPage && 'opacity-0'}`}
+        >
+          <ArrowRight />
+        </GameFieldButton>
       </div>
     </div>
   );

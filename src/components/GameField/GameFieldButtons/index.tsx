@@ -24,10 +24,12 @@ import CircleArrow from '../GameFieldIcons/CircleArrow';
 const GameFieldButton: React.FC<{
   children?: JSX.Element | string;
   className?: string;
+  disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}> = ({ children, className, onClick }) => {
+}> = ({ children, className, onClick, disabled }) => {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={`text-slate-500 hover:text-slate-300 active:text-slate-700 ${className}`}
     >
