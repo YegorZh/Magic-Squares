@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { nextLevel, setMenuState } from '../../redux/appStateSlice';
 import {
   initializeGameField,
@@ -21,6 +21,7 @@ import Info from './Info';
 import Tooltip from './Tooltip';
 import WinMessage from './WinMessage';
 import levels from '../../levels';
+import Confetti from 'react-confetti';
 
 const Level: React.FC<{
   currentLevel: number;
@@ -41,6 +42,7 @@ const Level: React.FC<{
     bottomCenter,
     bottomRight,
   } = structure || {};
+  const divRef = useRef<HTMLDivElement>(null);
 
   const startNewGame = () => {
     dispatcher(resetWin());
@@ -70,7 +72,15 @@ const Level: React.FC<{
       localStorage.setItem('levelsCompleted', (currentLevel + 1).toString());
   }
   return (
-    <div className="relative flex h-full w-full flex-col ">
+    <div ref={divRef} className="relative flex h-full w-full flex-col">
+      {isWon && (
+        <Confetti
+          numberOfPieces={100}
+          recycle={false}
+          width={divRef.current?.clientWidth}
+          height={divRef.current?.offsetHeight}
+        />
+      )}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 uppercase text-slate-600">
         {name}
       </div>

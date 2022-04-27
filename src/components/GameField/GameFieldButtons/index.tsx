@@ -31,7 +31,9 @@ const GameFieldButton: React.FC<{
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`text-slate-500 hover:text-slate-300 active:text-slate-700 ${className}`}
+      className={`text-slate-500 hover:text-slate-300 active:text-slate-700 ${className} ${
+        disabled && 'pointer-events-none'
+      }`}
     >
       {children && children}
     </button>

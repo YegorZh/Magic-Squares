@@ -4,9 +4,12 @@
     "build": "set NODE_ENV=production&& webpack"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
     "@types/react": "^17.0.42",
     "@types/react-dom": "^17.0.14",
     "autoprefixer": "^10.4.4",
+    "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",
@@ -28,6 +31,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "react": "^17.0.2",
+    "react-confetti": "^6.0.1",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.8"
   }

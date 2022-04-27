@@ -52,7 +52,7 @@ const Menu: React.FC = () => {
 
   return (
     <div className="m:auto relative flex h-full flex-1 flex-col gap-3 overflow-y-auto py-4">
-      <h1 className="mx-auto mt-auto  whitespace-nowrap border-l-red-500 text-[34px] font-bold uppercase sm:text-[48px]">
+      <h1 className="mx-auto mt-auto cursor-default whitespace-nowrap border-l-red-500 text-[34px] font-bold uppercase sm:text-[48px]">
         {titleJSX}
       </h1>
       <div className="mx-auto mt-auto flex flex-col space-y-3">
@@ -81,14 +81,14 @@ const Menu: React.FC = () => {
         <GameFieldButton
           onClick={() => clickHandler(-1)}
           disabled={isFirstPage}
-          className={`${isFirstPage && 'opacity-0'}`}
+          className={`${isFirstPage && 'opacity-20'}`}
         >
           <ArrowLeft />
         </GameFieldButton>
         <GameFieldButton
           onClick={() => clickHandler(1)}
           disabled={isLastPage}
-          className={`${isLastPage && 'opacity-0'}`}
+          className={`${isLastPage && 'opacity-20'}`}
         >
           <ArrowRight />
         </GameFieldButton>
