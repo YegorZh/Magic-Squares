@@ -15,10 +15,10 @@ const DarkButton: React.FC<{
   <button
     disabled={disabled}
     onClick={onClick}
-    className={`flex items-center justify-center whitespace-nowrap rounded-xl bg-slate-600  text-sm
-          font-bold uppercase tracking-tighter text-slate-400 transition sm:py-3 sm:px-8
+    className={`flex items-center justify-center whitespace-nowrap rounded-xl bg-slate-600
+          font-bold uppercase tracking-tighter text-slate-400 transition sm:py-3 sm:px-8 sm:text-sm
           ${disabled ? disabledStyles : usualStyles} ${
-      nonResponsive ? 'px-8 py-3' : 'px-3 py-3'
+      nonResponsive ? 'px-8 py-3 text-sm' : 'px-3 py-3 text-xs'
     } ${className}`}
   >
     {children}

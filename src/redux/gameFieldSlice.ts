@@ -223,9 +223,10 @@ export const gameFieldSlice = createSlice({
       }>
     ) => {
       const { n } = action.payload;
-      let i = 0;
-      while (winCheck(state, Object.keys(state.data)[0])) {
-        if (i > 100)
+      let limit = 0;
+      while (winCheck(state, Object.keys(state.data)[0]) || limit < 1) {
+        limit++;
+        if (limit > 100)
           throw new Error(
             '100 iterations of n times couldnt randomize gameField. Try setting higher n or remaking the level'
           );

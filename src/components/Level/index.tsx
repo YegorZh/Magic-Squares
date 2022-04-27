@@ -128,7 +128,11 @@ const Level: React.FC<{
         </div>
       </div>
       {isWon && (
-        <WinMessage className="pointer-events-none absolute top-1/2 translate-y-2" />
+        <WinMessage className="pointer-events-none absolute top-1/2 -translate-y-1/2">
+          You win!
+          <br />
+          You can proceed to the next level.
+        </WinMessage>
       )}
       <Info size={size} className="absolute left-3 top-3" />
       {!isStarted && (

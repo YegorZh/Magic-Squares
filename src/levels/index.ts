@@ -47,9 +47,12 @@ const levels: LevelData[] = [
     id: 2,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      topLeft: { swipeAllColumns: 'topLeft' },
+      topCenter: { swipeAllColumns: 'topCenter' },
+      topRight: { swipeAllColumns: 'topRight' },
+      middleLeft: { turn: 'middleLeft' },
+      middleCenter: { turn: 'middleCenter' },
+      middleRight: { turn: 'middleRight' },
     },
   },
   {
@@ -57,9 +60,9 @@ const levels: LevelData[] = [
     id: 3,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: { turn: 'middleCenter' },
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      middleLeft: { turn: 'middleLeft', swipeAllRows: 'middleLeft' },
+      middleCenter: { turn: 'middleCenter', swipeAllRows: 'middleCenter' },
+      middleRight: { turn: 'middleRight', swipeAllRows: 'middleRight' },
     },
   },
   {
@@ -67,9 +70,9 @@ const levels: LevelData[] = [
     id: 4,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
+      middleLeft: { turn: ['middleLeft', 'middleCenter'] },
       middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      middleRight: { swipeAllColumns: ['middleRight', 'middleCenter'] },
     },
   },
   {
@@ -77,9 +80,9 @@ const levels: LevelData[] = [
     id: 5,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      middleLeft: { swipeAllRows: 'middleLeft' },
+      middleCenter: { turn: 'ALL' },
+      middleRight: { swipeAllRows: 'middleRight' },
     },
   },
   {
@@ -87,9 +90,12 @@ const levels: LevelData[] = [
     id: 6,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      middleLeft: { turn: ['middleLeft', 'middleCenter'] },
+      middleCenter: {
+        swipeAllColumns: 'ALL',
+        swipeAllRows: 'ALL',
+      },
+      middleRight: { turn: ['middleRight', 'middleCenter'] },
     },
   },
   {
@@ -97,9 +103,17 @@ const levels: LevelData[] = [
     id: 7,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
+      topCenter: { turn: ['topCenter', 'middleCenter'] },
+      middleLeft: {
+        swipeAllRows: ['middleLeft', 'middleCenter'],
+      },
       middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      middleRight: {
+        swipeAllColumns: ['middleRight', 'middleCenter'],
+      },
+      bottomCenter: {
+        turn: ['bottomCenter', 'middleCenter'],
+      },
     },
   },
   {
@@ -107,9 +121,13 @@ const levels: LevelData[] = [
     id: 8,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      topLeft: {},
+      topCenter: { swipeAllRows: ['topLeft', 'topCenter', 'middleCenter'] },
+      middleCenter: { turn: 'ALL' },
+      bottomRight: {},
+      bottomCenter: {
+        swipeAllColumns: ['bottomRight', 'bottomCenter', 'middleCenter'],
+      },
     },
   },
   {
@@ -117,19 +135,145 @@ const levels: LevelData[] = [
     id: 9,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
+      topLeft: {},
+      topCenter: { turn: ['topCenter', 'middleCenter', 'topLeft'] },
+      middleLeft: {
+        swipeAllRows: ['middleLeft', 'middleCenter', 'topLeft'],
+      },
       middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      middleRight: {
+        swipeAllColumns: ['middleRight', 'middleCenter', 'bottomRight'],
+      },
+      bottomCenter: {
+        turn: ['bottomCenter', 'middleCenter', 'bottomRight'],
+      },
+      bottomRight: {},
+    },
+  },
+  {
+    name: 'Level 11',
+    id: 10,
+    size: defaultSize,
+    structure: {
+      middleLeft: { swipeColumn: 'middleLeft' },
+      middleCenter: { swipeColumn: 'middleCenter' },
+      middleRight: { swipeColumn: 'middleRight' },
+    },
+  },
+  {
+    name: 'Level 12',
+    id: 11,
+    size: defaultSize,
+    structure: {
+      middleCenter: { swipeColumn: 'middleCenter', swipeRow: 'middleCenter' },
+    },
+  },
+  {
+    name: 'Level 13',
+    id: 12,
+    size: defaultSize,
+    structure: {
+      middleCenter: { swipeColumn: 'middleCenter', swipeRow: 'middleCenter' },
+    },
+  },
+  {
+    name: 'Level 14',
+    id: 13,
+    size: defaultSize,
+    structure: {
+      middleLeft: { turn: ['middleLeft', 'middleCenter'] },
+      middleCenter: { swipeColumn: 'ALL', swipeRow: 'ALL' },
+      middleRight: { swipeAllColumns: ['middleRight', 'middleCenter'] },
+    },
+  },
+  {
+    name: 'Level 15',
+    id: 14,
+    size: defaultSize,
+    structure: {
+      middleLeft: { turn: ['middleLeft', 'middleCenter'] },
+      middleCenter: { swipeColumn: 'ALL', swipeRow: 'ALL' },
+      middleRight: { swipeAllRows: ['middleRight', 'middleCenter'] },
     },
   },
   {
     name: 'Level ???',
-    id: 10,
+    id: 15,
     size: defaultSize,
     structure: {
-      middleLeft: { swipeAllColumns: ['middleCenter', 'middleLeft'] },
-      middleCenter: {},
-      middleRight: { swipeAllRows: ['middleCenter', 'middleRight'] },
+      topLeft: { swipeColumn: 'topCenter' },
+      topCenter: { turn: 'bottomRight', swipeRow: 'topLeft' },
+      topRight: { swipeRow: 'bottomLeft' },
+      middleCenter: { turn: 'bottomLeft', swipeAllColumns: 'topRight' },
+      bottomLeft: { swipeColumn: 'topLeft' },
+      bottomRight: { turn: 'topLeft', swipeAllColumns: 'bottomLeft' },
+    },
+  },
+  {
+    name: 'Level !?!?',
+    id: 16,
+    size: defaultSize,
+    structure: {
+      topLeft: {},
+      topCenter: { turn: ['topLeft', 'topCenter', 'topRight'] },
+      topRight: {},
+      middleLeft: { swipeAllColumns: ['topLeft', 'middleLeft', 'bottomLeft'] },
+      middleCenter: { swipeRow: 'ALL', swipeColumn: 'ALL' },
+      middleRight: {
+        swipeAllRows: ['topRight', 'middleRight', 'bottomRight'],
+      },
+      bottomLeft: {},
+      bottomCenter: { turn: ['bottomLeft', 'bottomCenter', 'bottomRight'] },
+      bottomRight: {},
+    },
+  },
+  {
+    name: 'R E D A C T E D',
+    id: 17,
+    size: defaultSize,
+    structure: {
+      topLeft: {
+        swipeColumn: ['topLeft', 'topCenter', 'middleLeft'],
+        swipeRow: ['topLeft', 'topCenter', 'middleLeft'],
+      },
+      topCenter: { turn: ['topLeft', 'topCenter', 'topRight', 'middleCenter'] },
+      topRight: {
+        swipeColumn: ['topRight', 'topCenter', 'middleRight'],
+        swipeRow: ['topRight', 'topCenter', 'middleRight'],
+      },
+      middleLeft: {
+        turn: ['topLeft', 'middleLeft', 'bottomLeft', 'middleCenter'],
+      },
+      middleCenter: {
+        swipeAllColumns: [
+          'middleCenter',
+          'middleLeft',
+          'middleRight',
+          'topCenter',
+          'bottomCenter',
+        ],
+        swipeAllRows: [
+          'middleCenter',
+          'middleLeft',
+          'middleRight',
+          'topCenter',
+          'bottomCenter',
+        ],
+      },
+      middleRight: {
+        turn: ['topRight', 'middleRight', 'bottomRight', 'middleCenter'],
+      },
+      bottomLeft: {
+        swipeColumn: ['bottomLeft', 'bottomCenter', 'middleLeft'],
+        swipeRow: ['bottomLeft', 'bottomCenter', 'middleLeft'],
+      },
+      bottomCenter: {
+        turn: ['bottomLeft', 'bottomCenter', 'bottomRight', 'middleCenter'],
+      },
+      bottomRight: {
+        swipeColumn: ['bottomRight', 'bottomCenter', 'middleRight'],
+        swipeRow: ['bottomRight', 'bottomCenter', 'middleRight'],
+      },
     },
   },
 ];

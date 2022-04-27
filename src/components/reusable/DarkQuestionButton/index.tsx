@@ -29,7 +29,7 @@ const DarkQuestionButton: React.FC<{
     );
   else
     return (
-      <div ref={ref} className="flex space-x-2">
+      <div ref={ref} className="flex gap-2">
         <DarkButton
           onClick={(event) => {
             onClick(event);

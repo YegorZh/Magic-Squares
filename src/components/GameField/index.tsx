@@ -28,6 +28,7 @@ const GameField: React.FC<{
     actions || {};
   const [cellSize, setCellSize] = useState({ w: 'w-7', h: 'h-7' });
 
+  // for purge css sm:w-7 sm:h-7
   useEffect(() => {
     const checkWidth = () => {
       if (window.matchMedia('(min-width: 640px)').matches)
@@ -40,8 +41,8 @@ const GameField: React.FC<{
     return () => window.removeEventListener('resize', checkWidth);
   }, []);
 
-  const coverButtonStyles = `flex justify-center ${cellSize.w}`;
-  const sideButtonStyles = `flex items-center ${cellSize.h}`;
+  const coverButtonStyles = `flex justify-center items-center ${cellSize.w}`;
+  const sideButtonStyles = `flex items-center justify-center ${cellSize.h}`;
   const topButtons: JSX.Element[] = [];
   const bottomButtons: JSX.Element[] = [];
   const leftButtons: JSX.Element[] = [];
@@ -73,7 +74,7 @@ const GameField: React.FC<{
     );
   }
 
-  if (!swipeColumn && swipeAllRows) {
+  if (!swipeRow && swipeAllRows) {
     leftButtons.push(<SwipeAllLeftButton key={1} names={swipeAllRows} />);
     rightButtons.push(<SwipeAllRightButton key={1} names={swipeAllRows} />);
   }
@@ -96,24 +97,25 @@ const GameField: React.FC<{
           className={coverButtonStyles}
         />
       );
-      if (swipeRow) {
-        leftButtons.push(
-          <SwipeLeftButton
-            key={n}
-            index={n}
-            names={swipeRow}
-            className={sideButtonStyles}
-          />
-        );
-        rightButtons.push(
-          <SwipeRightButton
-            key={n}
-            index={n}
-            names={swipeRow}
-            className={sideButtonStyles}
-          />
-        );
-      }
+    }
+
+    if (swipeRow) {
+      leftButtons.push(
+        <SwipeLeftButton
+          key={n}
+          index={n}
+          names={swipeRow}
+          className={sideButtonStyles}
+        />
+      );
+      rightButtons.push(
+        <SwipeRightButton
+          key={n}
+          index={n}
+          names={swipeRow}
+          className={sideButtonStyles}
+        />
+      );
     }
     return (
       <div key={n} className="flex gap-2 rounded-2xl shadow-md">
@@ -129,17 +131,27 @@ const GameField: React.FC<{
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <div className="flex flex-col justify-center">{leftButtons}</div>
-      <div>
-        {topButtons.length > 0 && (
-          <div className="mb-2 flex justify-center">{topButtons}</div>
-        )}
-        {rows}
-        {bottomButtons.length > 0 && (
-          <div className="mt-2 flex justify-center">{bottomButtons}</div>
-        )}
+      <div
+        className={`flex flex-col items-center justify-center sm:${cellSize.w}`}
+      >
+        {leftButtons}
       </div>
-      <div className="flex flex-col justify-center">{rightButtons}</div>
+      <div>
+        <div className={`mb-1 flex justify-center sm:${cellSize.h}`}>
+          {topButtons}
+        </div>
+
+        {rows}
+
+        <div className={`mt-1 flex justify-center sm:${cellSize.h}`}>
+          {bottomButtons}
+        </div>
+      </div>
+      <div
+        className={`flex flex-col justify-center sm:${cellSize.w} items-center`}
+      >
+        {rightButtons}
+      </div>
     </div>
   );
 };
