@@ -479,11 +479,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-left: auto;
   margin-right: auto;
 }
-.mb-2 {
-  margin-bottom: 0.5rem;
+.mb-1 {
+  margin-bottom: 0.25rem;
 }
-.mt-2 {
-  margin-top: 0.5rem;
+.mt-1 {
+  margin-top: 0.25rem;
 }
 .mt-auto {
   margin-top: auto;
@@ -532,6 +532,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-5 {
   width: 1.25rem;
 }
+.max-w-\[240px\] {
+  max-width: 240px;
+}
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -539,8 +542,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-translate-x: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-.translate-y-2 {
-  --tw-translate-y: 0.5rem;
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .-translate-y-2 {
@@ -582,11 +585,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
-.space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .overflow-y-auto {
   overflow-y: auto;
 }
@@ -601,9 +599,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .rounded-xl {
   border-radius: 0.75rem;
-}
-.rounded {
-  border-radius: 0.25rem;
 }
 .rounded-b-xl {
   border-bottom-right-radius: 0.75rem;
@@ -742,6 +737,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
 .font-bold {
   font-weight: 700;
 }
@@ -793,14 +792,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
 }
-.opacity-100 {
-  opacity: 1;
-}
 .opacity-0 {
   opacity: 0;
 }
-.opacity-70 {
-  opacity: 0.7;
+.opacity-100 {
+  opacity: 1;
+}
+.opacity-90 {
+  opacity: 0.9;
 }
 .opacity-50 {
   opacity: 0.5;
@@ -884,8 +883,16 @@ body {
     height: 90%;
   }
 
+  .sm\:h-7 {
+    height: 1.75rem;
+  }
+
   .sm\:w-\[798px\] {
     width: 798px;
+  }
+
+  .sm\:w-7 {
+    width: 1.75rem;
   }
 
   .sm\:rounded-2xl {
@@ -904,6 +911,11 @@ body {
 
   .sm\:text-\[48px\] {
     font-size: 48px;
+  }
+
+  .sm\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 

@@ -56,10 +56,10 @@ const Menu: React.FC = () => {
         {titleJSX}
       </h1>
       <div className="mx-auto mt-auto flex flex-col space-y-3">
-        {levelsToRender.map((level, i) => (
+        {levelsToRender.map((level) => (
           <DarkButton
             disabled={
-              level.id > levelsCompleted && levelsCompleted < levels.length - 3
+              level.id > levelsCompleted && levelsCompleted < levels.length - 4
             }
             nonResponsive
             key={level.id}
