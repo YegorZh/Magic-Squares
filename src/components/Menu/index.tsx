@@ -1,6 +1,10 @@
 import levels from '../../levels';
-import { setCurrentLevel, setMenuState } from '../../redux/appStateSlice';
-import { useAppDispatch } from '../../redux/hooks';
+import {
+  setCurrentLevel,
+  setCurrentPage,
+  setMenuState,
+} from '../../redux/appStateSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import React, { useEffect, useState } from 'react';
 import GameFieldButton from '../GameField/GameFieldButtons';
 import { ArrowLeft, ArrowRight } from '../GameField/GameFieldIcons/Arrow';
@@ -9,7 +13,7 @@ import { colors } from '../../redux/gameFieldLogic';
 
 const Menu: React.FC = () => {
   const dispatcher = useAppDispatch();
-  const [currentPage, setCurrentPage] = useState(0);
+  const currentPage = useAppSelector((state) => state.appState.currentPage);
   const rowsPerPage = 5;
   const maxPages = Math.floor(levels.length / rowsPerPage);
   const [levelsCompleted, setLevelsComplteted] = useState(0);
@@ -20,14 +24,12 @@ const Menu: React.FC = () => {
   }, []);
 
   const clickHandler = (incrementer: number) => {
-    setCurrentPage((oldPage) => {
-      const newPage = oldPage + incrementer;
-      if (newPage < 0 || newPage > maxPages)
-        throw new Error(
-          'Invalid page value, must be more than 0 and less or equal to maxPages'
-        );
-      return newPage;
-    });
+    const newPage = currentPage + incrementer;
+    if (newPage < 0 || newPage > maxPages)
+      throw new Error(
+        'Invalid page value, must be more than 0 and less or equal to maxPages'
+      );
+    dispatcher(setCurrentPage(newPage));
   };
   let title = 'Magic Squares';
   let titleJSX: JSX.Element[] = [];

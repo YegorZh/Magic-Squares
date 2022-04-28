@@ -12,11 +12,13 @@ const checkCurrentLevel = (index: number) => {
 type appState = {
   menuState: menuState;
   currentLevel: number;
+  currentPage: number;
 };
 
 const initialState: appState = {
   menuState: 'menu',
   currentLevel: 0,
+  currentPage: 0,
 };
 
 const appState = createSlice({
@@ -28,6 +30,9 @@ const appState = createSlice({
     },
     setCurrentLevel: (state, action: PayloadAction<number>) => {
       state.currentLevel = action.payload;
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
     },
     previousLevel: (state) => {
       const newLevel = state.currentLevel - 1;
@@ -42,6 +47,11 @@ const appState = createSlice({
   },
 });
 
-export const { setMenuState, setCurrentLevel, nextLevel, previousLevel } =
-  appState.actions;
+export const {
+  setMenuState,
+  setCurrentLevel,
+  setCurrentPage,
+  nextLevel,
+  previousLevel,
+} = appState.actions;
 export default appState.reducer;

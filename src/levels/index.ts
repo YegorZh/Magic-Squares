@@ -173,7 +173,9 @@ const levels: LevelData[] = [
     id: 12,
     size: defaultSize,
     structure: {
-      middleCenter: { swipeColumn: 'middleCenter', swipeRow: 'middleCenter' },
+      middleLeft: { turn: ['middleLeft'] },
+      middleCenter: { swipeColumn: 'ALL', swipeRow: 'ALL' },
+      middleRight: { swipeAllColumns: ['middleRight'] },
     },
   },
   {
@@ -181,9 +183,9 @@ const levels: LevelData[] = [
     id: 13,
     size: defaultSize,
     structure: {
-      middleLeft: { turn: ['middleLeft', 'middleCenter'] },
+      middleLeft: { turn: ['middleLeft'] },
       middleCenter: { swipeColumn: 'ALL', swipeRow: 'ALL' },
-      middleRight: { swipeAllColumns: ['middleRight', 'middleCenter'] },
+      middleRight: { swipeAllRows: ['middleRight'] },
     },
   },
   {
@@ -193,7 +195,7 @@ const levels: LevelData[] = [
     structure: {
       middleLeft: { turn: ['middleLeft', 'middleCenter'] },
       middleCenter: { swipeColumn: 'ALL', swipeRow: 'ALL' },
-      middleRight: { swipeAllRows: ['middleRight', 'middleCenter'] },
+      middleRight: { swipeAllColumns: ['middleRight', 'middleCenter'] },
     },
   },
   {
