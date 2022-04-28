@@ -81,8 +81,12 @@ const Level: React.FC<{
           height={divRef.current?.offsetHeight}
         />
       )}
-      <div className="absolute top-5 left-1/2 -translate-x-full uppercase text-slate-600">
-        {name}
+      <div className="flex justify-between py-3 px-3">
+        <Info size={size} className="w-full" />
+        <div className="flex w-full items-end justify-center uppercase text-slate-600">
+          {name}
+        </div>
+        <div className="w-full" />
       </div>
       <div className="flex h-full w-full items-end">
         <div className="flex w-full justify-center">
@@ -150,7 +154,7 @@ const Level: React.FC<{
           You can proceed to the next level.
         </WinMessage>
       )}
-      <Info size={size} className="absolute left-3 top-3" />
+
       {!isStarted && (
         <Tooltip className="absolute left-12 top-4">
           <ArrowLeft /> Check win condition
